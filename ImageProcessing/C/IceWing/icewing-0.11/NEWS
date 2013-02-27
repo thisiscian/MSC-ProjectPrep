@@ -1,0 +1,427 @@
+News/Changes in iceWing
+-----------------------
+
+Version 0.11 (October 3 2012)
+  - Added callbacks for all widgets. Any number of them can be attached to
+    a widget and can be called when the widgets value changes or when the
+    widget is removed.
+  - The text of separator widgets is now bold, so it stands out more.
+  - Set the size of the entry widget for int's based on the max allowed value.
+  - New function opts_value_get() to get the value of a widget based on it's name.
+  - Support _NET_WM_ICON: More window managers will now show a window icon.
+  - New function iw_img_convert_layout() to convert between planar and
+    interleaved images.
+  - New function prev_copy_to_image() to get the content of a prevBuffer.
+  - iw_img_yuvToRgbVis() supports interleaved images.
+  - Added iw_opencv_render() for displaying OpenCv 2.x cv::Mat images directly.
+  - Added iw_opencvMat_from_img(), iw_opencv_to_img(), and iw_opencv_to_img_interleaved()
+    for conversion to/from OpenCv 2.x cv::Mat images.
+  - Enhanced record plugin:
+      - Support interleaved images.
+      - New mode to automatically deactivate recording after one plugin round.
+  - New CMake options to disable the autodetection of libraries.
+  - Support xdg-open and okular for viewing the iceWing documentation.
+  - Added RGB image display in the grab plugin.
+  - New options "-nyuv" and "-nrgb" for the grab plugin to make output
+    names of images configurable.
+  - Enhanced handling of duplicated frames when compiled without FFmpeg.
+  - Show only a warning and do not exit when grabbing an image did not work.
+  - Remove any double entries in the grabbing options which are shown
+    on the grabImage page.
+  - Added new aravis grabbing driver, supporting GenICam compatible cameras.
+  - Added new NET iCube grabbing driver.
+  - Added new IDS Imaging uEye grabbing driver.
+    Currently not all image widths are supported.
+  - Enhanced firewire driver:
+      - Added option 'propX' to set and get different properties.
+      - The format7 ROI can be changed on the fly.
+      - Option to set the iso speed.
+      - Option to reset the bus before starting capturing.
+      - Autodetection of the needed bayer pattern.
+      - Always return the newest image in the queue for the dc1394 V2 library,
+        as it was already done for the V1 library.
+      - Optionally use the image embedded timestamp from different point grey cameras.
+  - Enhanced V4L2 driver:
+      - Support for additional pixel formats by using libv4lconvert for
+        unknown formats.
+      - It seems that for some cameras/drivers setting a property before
+        grabbing an image does not take effect. So set the properties during
+        opening the device and after grabbing the first image.
+      - Do not fail but show only a warning if setting a property failed.
+      - Grabbed color images can be interpreted as gray images with an
+        increased width or height.
+      - Correct/complete support for bool and menu properties.
+  - Enhanced MATRIX VISION impact acquire driver:
+      - Added option to load a configuration file.
+      - On init try longer to get a valid image, the camera might take
+        some time to get up.
+      - Additional support for the pixel formats
+            ibpfMono12Packed_V2,    ibpfYUV422_10Packed, ibpfYUV422_UYVY_10Packed,
+            ibpfBGR101010Packed_V2, ibpfBGR888Packed,    ibpfYUV422_UYVYPacked,
+            ibpfYUV444_10Packed,    ibpfYUV444Packed,    ibpfYUV444_UYV_10Packed,
+            ibpfYUV444_UYVPacked
+  - Framework for changing grabber properties and other grabber
+    parameters on the fly.
+  - Optional GUI for changing all grabber properties on the fly.
+
+  Bug fixes:
+    - Wrong position of the tips for the log histogram.
+    - opts_float() corrections:
+        - Do not set longer strings as specified.
+        - Enhanced width of the entry widget.
+        - Ensure that no value gets out of the specified value range.
+    - Some cameras need a longer timeout for grabbing an image via V4L2.
+    - Fixed bayer decoding methods bilinear interpolation and smooth
+      hue transition interpolation on 64bit systems.
+    - Setting stringenter widgets changed only the widgets content,
+      not the associated variable.
+    - Fixed TSC reading on 64bit systems.
+    - Fixed compile error in icewing-control with gcc 4.4 (and newer ones).
+    - Fixed setting menu hot keys for GTK2 with icewing-control.
+    - Small resource leak fixes in error cases.
+    - -iconic option works now with GTK2.
+    - Explicitly link against all libraries which are used directly,
+      needed by newer linkers.
+    - Fixed non uchar OpenCV <> iceWing multi-planed image conversion
+      for images with a widthStep != 0.
+    - A press on the "read next/prev..." image navigation button was sometimes ignored.
+    - Fixed hanging shmdata cleanup on the receiver side.
+
+Version 0.10 (June 6 2009)
+  - Small documentation enhancements, especially much more complete index.
+  - Bug fixes:
+    - Fixed reinit of the grabber after a failed grabber init.
+    - Enhanced installation of empty directories for the CMake build system,
+      patch by Patrick Holthaus.
+
+Version 0.10rc1 (April 22 2009)
+  - New CMake based build system (CMakeLists.txt, cmake/, ...).
+  - pkg-config support.
+  - Optionally support GTK V2.x, GTK V1.2 is as well still supported.
+    Assume UTF-8 if GTK V2.x is used.
+  - Renamed the page 'Other' to 'GrabImage1'.
+  - Added main menu to the main iceWing window; moved 'Quit' and buttons
+    from the 'Other' page to the menu.
+  - All main menu entries and most of the image context menu items
+    can be remote controlled.
+  - The planes, which are rendered in image windows (normally 0 or 0,
+    1, 2) can be freely changed.
+  - Changed default color space for the "-sp" option to RGB.
+  - Added 'Close Window' to the image context menus.
+  - Draw histogram tips in a different color.
+  - Info Window:
+      - New layout.
+      - Display of the 'grab' point in the image windows.
+      - Possibility to average the color across a square area.
+  - Support pattern matching for setting widgets.
+  - Extended movie support:
+      - Added support for writing RAW444, RAW420, FFV1, and MPEG4 encoded video
+        files to the main program and the record plugin.
+      - Allow reading and writing of RAW444 and RAW420 movies without any
+        external dependencies.
+      - Expand instead of crop MJPEG's to a size divisible by 16.
+  - Support saving of PNG (JPEG) images, if the source image has more
+    than 4 (3) planes.
+  - Added display of the icewing.pdf manual to the help menu.
+  - Support all Latin-1 glyphs for text rendering.
+  - Enhanced plugins page in the "Plugin info" window:
+      - List all installed plugins.
+      - Allow to filter the displayed plugins.
+      - Show plugin name, arguments, and help message.      
+      - Arguments for new plugin instances can be specified.
+  - Plugins are searched, and can be installed, additionally at
+    ${ICEWING_PLUGIN_PATH}/plugins/ (colon separated variable) and
+    ~/.icewing/plugins/.
+  - Possibility to specify plugin dependencies ("ident", "ident()", and
+    "ident(plugs)") for plug_observ_data() and plug_observ_data_remove().
+  - Added native INET sockets based communication protocol to the remotectrl
+    plugin and the icewing-control program.
+  - Allow to specify mnemonics ('_'), accelerators ('<accel>'), and stock
+    icons ('<"stock" icon>') for menus.
+  - iceWing option "-d" now only disables the process() function.
+  - New plugin shmdata to distribute data via shared memory and local
+    sockets to other local processes.
+  - Extended record plugin:
+      - Support saving of >8bit PPM images.
+      - Support for new movie encodings RAW444, RAW420, FFV1, and MPEG4.
+      - Use the second thread for movie saving.
+      - Allow to save images of different plugins in different movie files.
+  - Do not parse ".gtkrc" (the GTK lib does it already), but parse "~/.icewing/gtkrc".
+  - The grabber device options can be changed during runtime.
+  - New bayer decoding method: Adaptive homogeneity-directed interpolation.
+  - Stereo decoding for 16 bit mono source images.
+  - Added new MATRIX VISION impact acquire grabbing driver.
+  - Enhanced firewire driver:
+      - Support format 7 (partial image grabbing modes).
+      - Support version 2 of the libdc1394 library.
+  - Enhanced V4L2 driver:
+      - Support resolutions greater than 768 x 576.
+      - Support printing / setting the video standard.
+      - Support more camera properties (control class and ones with none continuous IDs).
+      - noselect option to work around a zoran kernel driver bug.
+      - Stereo and bayer decoding.
+      - Support for the MJPEG pixel format.
+  - Stereo and bayer decoding for the unicap driver.
+  - Escape closes most of the dialogs.
+  - New plugins chapter and new program chapter in the documentation.
+
+  Bug fixes:
+    - Ignore all modifier keys besides shift and control for the page select hotkey.
+    - Fixed possible deadlock if no hotkey for an option page could be found.
+    - Fixed option parsing for the alpha camera driver.
+    - Fixed '-x' for the remotectrl plugin.
+    - Use the quality setting in the record plugin.
+    - During saving of movies: Crop/Extend frames to the size of the first frame.
+    - Fixed possible endless loop during reading of a movie if the movie does
+      not start with image number 1.
+    - Bayer decoding of images with an odd height.
+
+  - Incompatible changes:
+    - Renamed the define DEBUG to IW_DEBUG
+    - Renamed and slightly changed the defines DEFAULT_WIDTH/HEIGHT to
+      IW_PAL_WIDTH/HEIGHT.
+
+Version 0.9 (May 30 2006)
+  - Enhanced V4L2 driver:
+      - Added "-sg v" start option to disable video input guessing.
+      - Added options 'input', 'format', 'propX', and 'debug' to
+        select video input and pixel format, set properties and show
+        current settings.
+      - Additional support for the pixel formats
+        UYVY, YUV422P, YUV420, YUV411P, Y41P, YUV410, YVU410, RGB24,
+        BGR24, RGB32, BGR32, RGB565, RGB565X, RGB555, RGB555X, GREY,
+        and HI240.
+      - Automatically select a possible pixel format.
+      - Try /dev/video0 if /dev/video is not available.
+      - Check the kernel driver for a maximum grabbing size below
+        768 x 576 instead of assuming this size.
+      - Support half field grabbing.
+  - In the unicap driver support the pixel formats
+    H240, Y160, RGBO, RGB5, RGBQ, RGBP, RGB6, RGBR, RGB3, and Y422.
+  - Added plug_register() to allow language bindings to register new plugins.
+  - Allow buttoncb-buttons to be "set" via opts_value_set() and opts_load().
+  - Enhanced about window ;)
+
+  - Bug fixes:
+    - Do not leak a callback after loading a plugin from the GUI.
+    - Set a file name for the RGB image in the grabbing plugin only if
+      one is really available.
+    - Better distinguish between empty lists and lists with default
+      values during creation and loading/saving of lists.
+    - Check for the firewire and the unicap driver if they should be
+      used before issuing a warning if the drivers are not included.
+
+Version 0.9rc2 (April 18 2006)
+  - Moved the OpenCV display and conversion functions into iceWing.
+  - Support time discontinuities in movies, e.g. optionally correctly
+    duplicate frames if the frame timestamps and the fps values do not
+    match or simply return the the next frame.
+  - Enhanced icewing-control:
+      - Tab completion for the "set" command.
+      - Allow to change menu hotkeys.
+      - XCF support.
+  - A new plugin remotectrl to remote control iceWing with the XCF framework.
+  - Added const to a lot of the interface functions.
+
+  Bug fixes / small cleanups:
+    - Added sanity check of image dimensions during image allocating.
+    - Fixed SVG saving for bitmaps outside of the current directory.
+    - Fixed display of image values in the info window for interleaved images.
+    - Adapted command line options of the alpha grabber to the Linux
+      interface ('-fr' and '-sg 0/1').
+    - Correctly set the downsampling factor if the unicap driver is used.
+    - Show error message during saving of the option file if the file can
+      not be opened and enhanced different error messages.
+    - Do not immediately quit on SIGINT/SIGTERM if grabbing hardware is
+      currently accessed.
+    - Fixed possible deadlock during exit handling.
+    - Do not use incorrect session files.
+    - Always initialize the color table for loaded images.
+    - On startup set stdout/stderr to byte oriented mode.
+    - Fixed some compiler warnings for iw_assert() calls.
+    - Always jump over incorrect options during option parsing.
+    - In icewing-docgen handle plugins where an instance name could not
+      be determined.
+    - In icewing-plugingen allow an $exec_prefix with included '/'.
+    - Some documentation updates.
+
+Version 0.9rc1 (December 21 2005)
+  - Added icewing-plugingen, the plugin template generator.
+  - Added icewing-control command line tool to remote control iceWing.
+  - Saving of images in the vector format SVG.
+  - Support for the FFmpeg library to load additional video formats.
+  - Added new unicap grabbing driver.
+  - Optionally use a tree for the categories.
+  - Optionally use a scrollbar in the categories pages.
+  - Hotkeys to directly select the different option pages.
+  - Enhanced zooming/panning:
+      - Zoom such that the pixel under the mouse stays at the same position
+      - Support scroll wheel to pan/zoom in the window
+      - Context sub-menu for different zoom/pan-actions
+  - Show original image values in the info window.
+  - Show image meta info at a visible position inside the image.
+  - Rendering of HSV images,
+    render without color transformation for unknown color formats.
+  - Grabbing time equals now more correctly the real grabbing time.
+  - Support for duplicated AVI frames.
+  - Added plug_name(), plug_data_ref(), opts_defvalue_remove(),
+    opts_save_remove().
+  - Added two new bayer decoding methods:
+        Bilinear interpolation and edge sensing interpolation
+  - Added -stereo and -bayer options for the grabbing plugin.
+  - Added configurable timer to measure plugin execution times.
+  - Added --version option.
+  - -rc can be specified multiple times and can contain config settings.
+  - Initial support for images with more than 3 planes
+    (data structure, management, loading/saving in pnm/ice formats).
+  - opts_xxx_create() can replace already existing widgets and can
+    create widgets based on a full qualified name without a page number.
+  - Added value checking/clamping for the opts_xxx_create() functions.
+  - Small speedups at various places (real -> int conversion).
+    Faster YUV->RGB and RGB->YUV conversion.
+  - Added OpenCV display and conversion functions.
+  - Use the '%t' and '%T' file name markers to set the grabbing time
+    of an image.
+  - Added '%P', '%p', '%f', '%e', and '%F' modifiers to the record plugin.
+  - Solaris support.
+  - Removed dependency to the SFB library and the memTraject library.
+
+  Documentation enhancements:
+    - doxygen support, the doxygen output can be found at
+        http://icewing.sorceforge.net/doxygen
+      and can be generated with make doxygen.
+    - Complete English translation of the programming guide
+      (thanks to Ilker Savas).
+    - Updated documentation.
+
+  Important bugfixes:
+    - Correctly render images with a large dynamic and images with
+      negative values.
+    - Fixed possible dead lock between two threads.
+    - Close all AVI files on program exit.
+    - For every window allow only one save menu entry to be selected
+      at the same time.
+    - Set downw/downh according to the real downsampling, and not only
+      according the downsampling slider.
+
+  - Incompatible changes:
+      - API cleanup: Removed different name spaces and exchanged them by
+          the name space iw. There is a script
+              icewing-api-update
+          to adapt plugins. Start it with all source code files as
+          parameters. The files are then adapted. For all changed
+          files a backup 'file.bak' is created.
+      - Removed deprecated global variable act_img and deprecated
+        functions img_save(), img_save_raw(), img_save_interleaved_raw().
+      - iwImage (formerly imgImage) contains now a pointer to an array
+        of planes, instead of an array of 3 planes directly.
+      - Changes of the grabImageData structure:
+          - Contains the image directly, and not a pointer to the image.
+          - downw, downh are now floats.
+      - The value for the slider "Other.Image Num" is not saved anymore. But
+        it is loaded and interpreted normally.
+      - Moved the default configuration files ${HOME}/.icewing_session and
+        ${HOME}/.icewing_value into an own directory, namely
+        ${HOME}/.icewing/session and ${HOME}/.icewing/values
+
+Version 0.8.1 (Mar 08 2005)
+  - Some Bugfixes:
+    - Fixed SegV during program exit if a camera could not be initialized.
+    - Check that the GUI is initialized in opts_page_append() and prev_new_window().
+    - Fixed prev_free_window().
+    - Set all contour points during polygon filling.
+    - Do not append a spurious space in plug_add_default_page().
+    - Missing var init for region labeling.
+    - Do not call the same plugin recursively if plug_add_default_page() is used.
+
+Version 0.8 (Jan 19 2005)
+  - Enhanced firewire driver:
+      - Support for all format0/1/2 modes from 160x120 to 1600x1200.
+      - Native support for RGB, gray, and gray16 grabbing.
+      - Check available modes and automatically select a suitable one.
+      - Decoding of interleaved stereo images.
+      - Bayer decoding with three interpolation methods and all four bayer patterns.
+        The interpolation methods: 1. downsampling
+                                   2. nearest neighbor interpolation
+                                   3. smooth hue transition interpolation
+  
+  - New options for the grabbing plugin,
+      -rot to rotate the input image by 90/180/270 degree and
+      -crop to crop the input image.
+  
+  - Loading of 16 bit png images and native support for gray level png images.
+    16 bit saving was already available.
+  
+  - The session file can be auto saved at program exit.
+  
+  - Support for loading/saving pan and zoom values in session files.
+  
+  - Plugins can pan/zoom the image windows.
+  
+  - New tool in the image info window:
+    Measure distances and angles in image windows.
+  
+  - Added support for subpixel exact rendering for the vector objects
+    by using floats as coordinate types.
+  
+  - Added new data conversion mode for displaying high bit images:
+    Shift the complete range to 0..255, can be selected in the image/Settings window.
+  
+  - Do not stop icewing if an image could not be loaded,
+    just skip the problematic image.
+  
+  - Extended the max. allowed size of @file-files to about 3.8 MB.
+  
+  - Added new file set possibilities: If %t and/or %T is inside the
+    fileset name, scan the complete directory for matching names.
+  
+  - Added debug_x(), warning_x(), error_x(), and assert_x().
+  
+  - Updated documentation.
+
+Version 0.7 (Aug 16 2004)
+  - All entries from the struct grabParameter (passed to the init
+    function of all plugins), which belonged to the grabbing
+    plugin, were removed.
+
+  - All plugins are initialized in the order they were loaded.
+
+  - Spaces, '(', and ')' are not allowed in ident and plugin names.
+
+  - The grab plugin can be instantiated multiple times, This allows, for
+    example, to use multiple cameras at the same time. Every instance
+    has is own two queues of grabbed images and provides them to plugins
+    and via DACS to external programs.
+
+  - The grab plugin now stores additionally images in the RGB color space
+    under the ident "imageRGB", if this ident is observed from any plugin.
+
+  - Added plug_add_default_page(), which allows the user with the help
+    of two widgets to
+      - bypass the plugin process call and
+      - to specify plugin dependencies for the plugin. The plugin gets
+        then called one after another with the data from the specified
+        plugins.
+
+  - Added logging panel in the Plugin Info window.
+
+  - Added display of a second position in the Info Window.
+
+  - Menu hotkeys from the context menu of image windows are saved in the
+    config file.
+
+  - Added loading/saving/changing support for variables without any
+    need for an associated widget.
+
+  - Save images only if the corresponding window is open
+    (for the entries in the image context menus).
+
+  - Added initial MacOSX Support.
+
+  - Added multiple instance support, imgImage support, and initial support
+    for data types != IMG_8U to the record plugin.
+
+  - Allow shell like word expansion in plugin options and in option
+    config files.
+
+  - Updated documentation.

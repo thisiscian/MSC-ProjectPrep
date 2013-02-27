@@ -1,0 +1,51 @@
+This directory contains different plugins for iceWing. Some of these plugins
+are directly compiled into iceWing and some other are normal external
+plugins. The makefile in this directory helps to build all external plugins
+by calling successively all makefiles of all the external plugins.
+
+Here is a short description of the plugins:
+
+demo
+    An external plugin demonstrating all widgets available in iceWing and
+    the different render capabilities of iceWing.
+min
+    An external plugin showing the basic structure of an iceWing plugin.
+min_cxx
+    An external plugin showing the basic structure of an iceWing plugin. It's
+    nearly identical to the min plugin besides that it uses the C++ plugin
+    interface of iceWing.
+record
+    Compiled into iceWing. Performs optimized saving of images by using a
+    second thread to write the images to disk.
+remotectrl
+    An external plugin which allows to remote control iceWing with an own
+    socket based communication protocol and optionally with the XCF
+    framework. The plugin provides two functions to get/set settings of
+    iceWing widgets, similar to the iceWing '-of' option. See also the
+    icewing-control program from the utils directory.
+shmdata
+    An external plugin which allows to distribute data via shared memory
+    and local sockets to other local processes (1 to n communication).
+    Supported are data elements of type grabImageData, iwImage, and char[].
+
+The following plugins belong all to a project about hand segmentation
+and tracking. They are all (a) compiled into iceWing, (b) somewhat old, and
+(c) probably not really generally useful.
+
+imgclass
+    Performs color classification of the input image by using a lookup
+    table.
+skinclass
+    Segment skin colored regions. Needs at least one other plugin to perform
+    the real color classification.
+backpro
+    Perform color classification based on back projection. Needs the
+    skinclass plugin.
+gsimple
+    Perform color classification with a gauss distribution. Needs the
+    skinclass plugin.
+polynom
+    Perform color classification with a lookup table. This plugin needs the
+    skinclass plugin.
+tracking
+    Track regions with a kalman filter. Needs the skinclass plugin.

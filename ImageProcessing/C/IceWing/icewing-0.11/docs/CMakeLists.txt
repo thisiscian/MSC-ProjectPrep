@@ -1,0 +1,39 @@
+PROJECT(DOCS)
+# The iceWing.pdf documentation
+
+MACRO(FIND var prg)
+    FIND_PROGRAM(${var} NAMES ${prg})
+    IF(NOT ${var})
+	MESSAGE("** ${prg} not found.\n"
+		"   The iceWing PDF manual will not be build.")
+    ENDIF(NOT ${var})
+ENDMACRO(FIND var prg)
+
+IF(WITH_DOC AND NOT EXISTS ${DOCS_SOURCE_DIR}/icewing.pdf)
+    FIND(PDFLATEX pdflatex)
+    FIND(BIBTEX bibtex)
+    FIND(MAKEINDEX makeindex)
+    FIND(CONVERT convert)
+    FIND(FIG2DEV fig2dev)
+    FIND(MAKE make)
+    MARK_AS_ADVANCED(PDFLATEX BIBTEX MAKEINDEX CONVERT FIG2DEV MAKE)
+
+    IF(PDFLATEX AND BIBTEX AND MAKEINDEX AND CONVERT AND FIG2DEV AND MAKE)
+	# FIXME: Remove the need for make
+	#        and do not build in the source dir
+	ADD_CUSTOM_COMMAND(
+	    OUTPUT ${DOCS_SOURCE_DIR}/icewing.pdf
+	    COMMAND ${MAKE} final
+	    WORKING_DIRECTORY ${DOCS_SOURCE_DIR})
+	ADD_CUSTOM_TARGET(PDFManual ALL
+	    DEPENDS ${DOCS_SOURCE_DIR}/icewing.pdf)
+	MESSAGE("-- Will create the iceWing PDF manual.")
+    ELSE(PDFLATEX AND BIBTEX AND MAKEINDEX AND CONVERT AND FIG2DEV AND MAKE)
+	SET(WITH_DOC 0)
+    ENDIF(PDFLATEX AND BIBTEX AND MAKEINDEX AND CONVERT AND FIG2DEV AND MAKE)
+ENDIF(WITH_DOC AND NOT EXISTS ${DOCS_SOURCE_DIR}/icewing.pdf)
+
+IF(WITH_DOC OR EXISTS ${DOCS_SOURCE_DIR}/icewing.pdf)
+    INSTALL(FILES icewing.pdf
+	DESTINATION ${DATADIR})
+ENDIF(WITH_DOC OR EXISTS ${DOCS_SOURCE_DIR}/icewing.pdf)

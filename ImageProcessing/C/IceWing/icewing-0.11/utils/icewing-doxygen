@@ -1,0 +1,42 @@
+#!/bin/awk -f
+
+# Reformat comments for doxygen
+
+{
+	if (FNR < 5) {
+		print;
+	} else {
+		if (/\/\*\*\*\*\*\*\*\*/) {
+			print "/**";
+			do {
+				getline;
+				if (!/\*\*\*\*/) {
+					gsub (/\t/, "\\&nbsp;\\&nbsp;\\&nbsp;\\&nbsp;");
+					gsub ("  ", "\\&nbsp; ");
+
+					gsub ("\\\\", "\\\\");
+					gsub ("\\$", "\\$");
+					gsub ("@", "\\@");
+					gsub ("<", "\\<");
+					gsub (">", "\\>");
+					gsub ("#", "\\#");
+
+					printf ("%s\\n\n", $0);
+				} else
+					print;
+			} while (!/\*\*\*\*/);
+		} else if (/\/\*[^*]/ && !/endif/) {
+			gsub ("\\\\", "\\\\");
+			gsub ("@", "\\@");
+
+			if (/^.*[[:alnum:]].*\/\*/) {
+				sub(/\/\*/, "/**<");
+			} else {
+				sub(/\/\*/, "/**");
+			}
+			print;
+		} else {
+			print;
+		}
+	}
+}

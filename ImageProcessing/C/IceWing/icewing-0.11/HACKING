@@ -1,0 +1,69 @@
+Coding Style
+============
+Indention:
+  Indent by a tab and use a tab width of 4.
+
+Placing braces and spaces:
+  Kernighan and Ritchie style, i.e
+      int function (int x)
+      {
+          if (x == 10) {
+              printf ("x equals 10\n");
+              statement2;
+              do {
+                  statement3;
+                  x--;
+              } while (x > 0);
+          } else {
+              printf ("x != 10\n");
+          }
+      }
+
+Naming:
+  _NO_ so-called Hungarian notation, i.e. do _NOT_ encode the type of a
+  function or the type of a variable into its name. The compiler knows the
+  types anyway and can check those, and it only confuses the programmer.
+
+Every function, especially every global function, should start with a comment
+of the form
+  /*********************************************************************
+    Function comment. ...
+  *********************************************************************/
+Every function used only locally must be declared static as well as every
+global variable (to be used only if you _really_ need them). Real global
+variables, i.e. global variables without static, are not allowed.
+
+Things to do before a release
+=============================
+- Change version number/year in:
+    README
+    icewing.1
+    main/icewing.c
+    main/mainloop.c
+    docs/icewing.tex
+  Update
+    NEWS
+    website/download.html
+    website/icewing.html
+
+- cd docs
+  make final
+
+- make dist
+  Test with different compilers on different platforms
+
+- make doxygen
+  scp doxygen/* user,icewing@web.sourceforge.net:htdocs/doxygen/
+  scp NEWS user,icewing@web.sourceforge.net:htdocs/
+  scp docs/icewing.pdf user,icewing@web.sourceforge.net:htdocs/icewing-0.11.pdf
+  scp website/download.html website/icewing.html user,icewing@web.sourceforge.net:htdocs/
+
+- Test all website files:
+  ssh -t user,icewing@shell.sourceforge.net create
+
+- scp icewing-0.11.tar.bz2 ffmpeg-20090422.tar.bz2 frs.sourceforge.net:uploads/
+  New File Release with
+        Release Name: 0.11
+        Package Name: iceWing
+
+- Write a News entry / Write an announcement mail

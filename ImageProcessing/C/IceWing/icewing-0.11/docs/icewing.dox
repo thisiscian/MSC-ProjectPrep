@@ -1,0 +1,13 @@
+/** \mainpage
+
+<br>
+The main user and programming documentation for iceWing can be found in the
+iceWing distribution in the file <b>docs/icewing.pdf</b>. A good source of
+information during programming of plugins provide the installed
+<b>iceWing header</b> files. 
+
+The doxygen documentation, which can be found here, is automatically extracted
+from the header files. Due to this automatic process some documentation
+comments may be incomplete compared to the header files.
+
+*/

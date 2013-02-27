@@ -1,0 +1,344 @@
+.TH iceWing 1 "3 October 2012" "Version 0.11" "Vision Tools and Applications (ViTA)"
+
+.SH NAME
+
+.BR iceWing " - graphical plugin shell for e.g. image processing"
+
+.SH SYNOPSIS
+
+.B icewing
+[-n name] [-sg [inputDrv] [drvOptions] | -sd stream [synclev] |
+        -sp <fileset>... | -sp1 <fileset>...] [-prop] [-c cnt]
+       [-f [cnt]] [-r factor] [-stereo] [-bayer [method] [pattern]]
+       [-crop x y w h] [-rot {0|90|180|270}] [-oi [interval]] [-of]
+       [-os] [-p <width>x<height>] [-rc config-file|config-option]
+       [-ses session-file] [-l libs] [-lg libs] [-a plugin args]
+       [-d plugins] [-iconic] [-t talklevel]
+       [-time <cnt|plugins|all>...] [--help] [--version] [@file]
+
+.SH DESCRIPTION
+
+.B iceWing,
+the Integrated Communication Environment Which Is Not Gesten, is a
+graphical plugin shell for e.g. image processing. Predefined or
+self-written plugins operate hierarchically on pre-given data and can
+also generate new data-streams. For image support there is e.g. a
+predefined plugin for reading images from different grabber devices,
+from the file system in various formats and also from external,
+network wide processes. Moreover, iceWing provides functions to easily
+create a user interface for the plugins and to allow them to visualize
+results.
+
+Other plugins e.g. save image sequences to disk, segment skin colored
+regions in image sequences, track regions with a Kalman filter, detect
+faces, or segment images. Other plugins can be written.
+
+.SH OPTIONS
+.TP
+.BI -n " name"
+Use \fIname\fR for DACS registration, default: icewing.
+.TP
+.BI -sg " inputDrv drvOptions"
+Use \fIinputDrv\fR [PAL_COMPOSITE|PAL_S_VIDEO|V4L2|ARAVIS|FIREWIRE|ICUBE|UNICAP|MVIMPACT|UEYE]
+(or [C|S|V|A|F|I|U|M|E]) with driver specific options for grabbing, default:
+PAL_S_VIDEO, no options. For help, use 'help' as an option string,
+e.g. '-sg f help' gives help for the firewire driver.
+.TP
+.BI -sd " stream synclev"
+Use DACS stream \fIstream\fR with a sync level \fIsynclev\fR (default:
+0) for input.
+.TP
+.BI -sp " fileset"
+Use fileset \fIfileset\fR for input, e.g.
+-sp image%03d.ppm r img%d.gif y img.jpg
+
+.PD 0
+.RS
+fileset = fileset | 'y' | 'r' | 'e' | 'E' | 'f' | 'F' | 'file'
+.IP 'y'|'r'
+Following images are YUV|RGB-images, default: RGB.
+.IP 'e'|'E'
+Open all files/check only the extension to verify if the following files are
+movie files. Default: open all files.
+.IP 'f'|'F':
+Return frames from movies according to the FPS value, e.g. duplicate
+frames if necessary / Return only the frames stored in the movie,
+default: FPS correct
+.IP "Only %d in 'file'"
+Read 'file' with consecutive 0, 1, ... replacing %d. printf() style modifiers
+are allowed.
+.IP "Any of %d, %T, %t in 'file'"
+Scan directory for files matching 'file' with any numbers replacing %d, %T, %t
+and read them sorted by the numbers replacing %d, %T, and %t in that
+direction. No printf() style modifiers are allowed.
+.RE
+.PD 1
+.TP
+.BI -sp1 " fileset"
+Use fileset \fIfileset\fR for input and play it only once,
+see \fB-sp\fR for syntax of \fIfileset\fR.
+.TP
+.BI -prop
+Do not create a GUI for changing grabber properties on the fly. Only
+meaningful when \fB-sg\fR is used as well.
+.TP
+.BI -c " cnt"
+Number of images queued in memory at the same time, default: 2.
+.TP
+.BI -f " cnt"
+Grab full images and downsample afterwards. Optional argument gives
+number of images to queue in memory at the same time, default: 1
+.TP
+.BI -r " factor"
+Upsample factor needed to get to full sized images (default:
+1). E.g. regions are upsampled by this factor.
+.TP
+.BI -stereo
+Expect gray images containing interlaced stereo images and decompose them by
+putting them one after the other.
+.TP
+.BI -bayer " method pattern"
+Expect a gray image with an embedded bayer pattern as the input
+image. Use the specified \fImethod\fR and the specified bayer
+\fIpattern\fR to decompose it. Supported methods are:
+.RS
+.TP
+.B down
+Downsampling of the input image by a factor of 2.
+.TP
+.B neighbor
+Nearest neighbor interpolation.
+.TP
+.B bilinear
+Bilinear interpolation.
+.TP
+.B hue
+Smooth hue transition interpolation.
+.TP
+.B edge
+Edge sensing interpolation.
+.TP
+.B ahd
+Adaptive homogeneity-directed interpolation.
+.PP
+Supported bayer patterns are: \fIRGGB | BGGR | GRBG | GBRG\fR.
+If no method or pattern is specified, downsampling and RGGB are used.
+.RE
+.TP
+.BI -crop " x y width height"
+Crop a rectangle starting at position (\fIx\fR,\fIy\fR) of size
+\fIwidth\fR x \fIheight\fR from the input image. If \fIwidth\fR or
+\fIheight\fR are <= 0, they are measured from the right or bottom
+side.
+.TP
+.BI -rot " angle"
+Rotate the input image by \fIangle\fR. Supported are the angles
+0, 90, 180, and 270, default: 0.
+.TP
+.BI -oi " interval"
+Output every \fIinterval\fR image (default: 1) on stream
+\fB<icewing>_images\fR and provide a function
+\fB<icewing>_setCrop("x1 y1 x2 y2")\fR to crop the streamed images.
+.TP
+.BI -of
+Provide a function \fB<icewing>_control(char[])\fR to control the
+GUI via DACS, a function \fB<icewing>_getSettings(void)\fR to get the
+current widget settings and a function \fB<icewing>_getImg(imgspec)\fR
+to get an image. Format of imgspec:
+  ['PLUG' plugnum] ('NUM' imgnum|'TIME' sec usec|'FTIME' sec usec) down
+.RS
+.TP
+.B PLUG
+Return the image grabbed from the plugin plugnum (if multiple grabbing
+plugins are instantiated).
+.TP
+.B NUM
+Return image with the number imgnum. If imgnum<0, return a full size
+image, see \fB-f\fR. If imgnum==0, return the current full size
+image.
+.TP
+.B TIME
+Return image with a grabbing time most similar to (sec usec).
+.TP
+.B FTIME
+Return a full size image with a grabbing time most similar to (sec usec), see \fB-f\fR.
+.TP
+.B down
+Down sample returned image by factor down.
+.RE
+.TP
+.BI -os
+Output some (currently very few) status informations on stream
+\fB<icewing>_status\fR.
+.TP
+.BI -p " <width>x<height>"
+Size of preview windows, default: 384x288.
+.TP
+.BI -rc " config-file|config-setting"
+If the argument to this option contains a '=', set GUI options
+according to the given argument. Otherwise load the config file
+\fIconfig-file\fR additionally to
+"$(HOME)/.icewing/values".
+.TP
+.BI -ses " session-file"
+Load the session file \fIsession-file\fR instead of
+"$(HOME)/.icewing/session" and use this file for any session related
+operations.
+.TP
+.BI -a " plugin args"
+Give arguments for plugin \fIplugin\fR,
+  help for \fIplugin\fR is shown with -a \fIplugin\fR "-h".
+.TP
+.BI -d " plugins"
+Disable plugins, eg. -d "backpro imgclass".
+.TP
+.BI -l " libs"
+Load plugins from libraries \fIlibs\fR. Can also be used to activate
+internal plugins. If a library \fIlib\fR can not be loaded the locations
+$(ICEWING_PLUGIN_PATH)/plugins/, ~/.icewing/plugins/, and
+$(PREFIX)/lib/iceWing/ are tried. $(ICEWING_PLUGIN_PATH) is a colon
+separated list of possible directoies. At every location first
+\fIlib\fR is tried and if that fails then lib\fIlib\fR.so is tried.
+
+  Eg. -l "record libs/libtest1.so libs/libplugin2.so".
+.TP
+.BI -lg " libs"
+Load plugins from libraries \fIlibs\fR and make its symbols glabally
+available. Can also be used to activate internal plugins. See \fB-l\fR for
+the locations and name variants where the libaries are searched.
+
+  Eg. -lg "libs/libtest1.so libs/libplugin2.so".
+
+Normally, \fB-l\fR should be used to load plugins.
+.TP
+.BI -iconic
+Start main window iconified.
+.TP
+.BI -t " talklevel"
+Output messages only if its level is below \fItalklevel\fR, default:
+5, used range of levels: 0..4.
+.TP
+.BI -time " <cnt|plugins|all>..."
+\fIcnt\fR specifies after how many main loop iterations time
+measurements are given out. If \fIcnt\fR<=0 measurements are
+disabled, the default is 50.
+  The other enable timers to measure process() execution times of
+single plugin instances. If \fIall\fR is given, all plugin instances
+are measured.
+  Eg. -time "5 backpro imgclass" outputs time measurements all 5
+mainloop runs and creates timers for the plugin instances backpro and
+imgclass.
+.TP
+.BI --help
+Display help information and exit.
+.TP
+.BI --version
+Display version information and exit.
+.TP
+.BI @ "file"
+Replace the argument \fI@file\fR with the content of \fIfile\fR.
+Any lines starting with '#' are ignored. Allows to store arguments in
+files.
+
+.PP
+The options \fB-l\fR, \fB-lg\fR, \fB-d\fR, \fB-a\fR, \fB-rc\fR, and
+\fB-time\fR can be specified multiple times.
+
+.SH FILES
+.TP
+.B $(HOME)/.icewing/values
+Default configuration file, loaded on startup of the program.
+.TP
+.B $(HOME)/.icewing/session
+Session file containing window positions, loaded on startup of the program.
+.PP
+.B sfb.conf
+.br
+.B sfb.dat
+.br
+.B sony.conf
+.TP
+.B sony.dat
+Lookup tables installed under $(DATADIR) (default:
+$(PREFIX)/share/iceWing). If a lookup table can not be loaded, this
+directory is searched.
+.RS
+.TP
+.B sfb.conf
+Lookup table containing confidence values, trained for the static cameras.
+.TP
+.B sfb.dat
+Lookup table containing hard decisions, trained for the static cameras.
+.TP
+.B sony.conf
+Lookup table containing confidence values, trained for the Sony
+EVI-D30/D31 cameras.
+.TP
+.B sony.dat
+Lookup table containing hard decisions, trained for the Sony
+EVI-D30/D31 cameras.
+.RE
+
+.SH NEEDED ENVIRONMENT
+.TP
+.B GTK+
+GUI Toolkit
+.RE
+
+Optional:
+.TP
+.B gdk-pixbuf libjpeg libpng libz
+Loading and saving of various image formats (png, jpeg, gif, bmp, ...)
+.TP
+.B FFmpeg
+Loading and saving of various video formats
+.TP
+.B aravis, libraw1394, libdc1394, NET iCube NETUSBCAM, unicap, MV impact acquire, IDS uEye
+Grabbing of images from different hardware devices
+.TP
+.B AVLib
+Grabbing of images on Alpha/True64 systems
+.TP
+.B libv4lconvert
+Supporting additional pixel formats for the v4l2 grabbing driver
+.TP
+.B DACS
+Distributed Application Communication System
+
+.SH EXAMPLE
+.TP
+$ icewing -sg S -oi
+  -l "skinclass polynom"
+  -a polynom "-lc l_hand_vor_pappe.conf"
+  -a skinclass -o
+
+Grab images from the first SVideo grabber and output the grabbed images
+on a DACS stream. Activate the plugins 'skinclass' and 'polynom' and use
+them to segment regions based on a confidence mapped lookup
+file. Output the segmented regions on a DACS stream.
+
+.SH AUTHOR
+
+Frank Loemker (floemker@techfak.uni-bielefeld.de)
+
+.SH COPYRIGHT
+
+Copyright (C) 1999-2012
+Frank Loemker, Applied Computer Science, Faculty of Technology,
+Bielefeld University, Germany
+
+This file is part of iceWing, a graphical plugin shell.
+
+iceWing is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+iceWing is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.

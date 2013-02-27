@@ -1,0 +1,258 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then
+    argv0=`basename $0`
+    echo "Usage: $argv0 file [...]" >&2
+    echo "" >&2
+    echo "Update all given source code files from iceWing before 0.9 to" >&2
+    echo "the lastest iceWing API. A backup 'file.bak' is created for all" >&2
+    echo "changed files." >&2
+    exit 1
+fi
+
+iw_api_update() {
+    file=$1
+    backup=$file.bak
+
+    if test -d $file; then
+	echo Omitting directory $file
+	return
+    fi
+
+    cp $file $backup
+    sed -e '{
+	s/\<PLUG_IMAGE\>/PLUG_ABI_VERSION/g
+	s/\<TIME_MESSURE\>/IW_TIME_MESSURE/g
+	s/\<DIFF_TIMEVAL\>/IW_TIME_DIFF/g
+	s/\<ARG_NO_NUMBER\>/IW_ARG_NO_NUMBER/g
+	s/\<error_1\>/iw_error/g
+	s/\<error_2\>/iw_error/g
+	s/\<error_3\>/iw_error/g
+	s/\<error_4\>/iw_error/g
+	s/\<error_5\>/iw_error/g
+	s/\<error_6\>/iw_error/g
+	s/\<warning_1\>/iw_warning/g
+	s/\<warning_2\>/iw_warning/g
+	s/\<warning_3\>/iw_warning/g
+	s/\<warning_4\>/iw_warning/g
+	s/\<warning_5\>/iw_warning/g
+	s/\<warning_6\>/iw_warning/g
+	s/\<error_x\>/iw_error/g
+	s/\<warning_x\>/iw_warning/g
+	s/\<debug_1\>/iw_debug/g
+	s/\<debug_2\>/iw_debug/g
+	s/\<debug_3\>/iw_debug/g
+	s/\<debug_4\>/iw_debug/g
+	s/\<debug_5\>/iw_debug/g
+	s/\<debug_6\>/iw_debug/g
+	s/\<debug_7\>/iw_debug/g
+	s/\<debug_8\>/iw_debug/g
+	s/\<debug_9\>/iw_debug/g
+	s/\<debug_10\>/iw_debug/g
+	s/\<assert_1\>/iw_assert/g
+	s/\<assert_2\>/iw_assert/g
+	s/\<assert_3\>/iw_assert/g
+	s/\<assert_4\>/iw_assert/g
+	s/\<assert_5\>/iw_assert/g
+	s/\<debug_x\>/iw_debug/g
+	s/\<assert_x\>/iw_assert/g
+	s/\<chk_malloc\>/iw_malloc0/g
+	s/\<string_split\>/iw_string_split/g
+	s/\<parse_args\>/iw_parse_args/g
+	s/\<load_args\>/iw_load_args/g
+	s/\<w_usleep\>/iw_usleep/g
+	s/\<time_add_static\>/iw_time_add_static/g
+	s/\<time_add_static2\>/iw_time_add_static2/g
+	s/\<time_add_static3\>/iw_time_add_static3/g
+	s/\<time_add\>/iw_time_add/g
+	s/\<time_set_enabled\>/iw_time_set_enabled/g
+	s/\<time_init\>/iw_time_init/g
+	s/\<time_init_all\>/iw_time_init_all/g
+	s/\<time_start\>/iw_time_start/g
+	s/\<time_stop\>/iw_time_stop/g
+	s/\<time_show\>/iw_time_show/g
+	s/\<set_talklevel\>/iw_debug_set_level/g
+	s/\<get_talklevel\>/iw_debug_get_level/g
+	s/\<VERSION\>/ICEWING_VERSION/g
+	s/\<PRG_NAME\>/ICEWING_NAME/g
+	s/\<IMG_CTAB_SIZE\>/IW_CTAB_SIZE/g
+	s/\<imgColtab\>/iwColtab/g
+	s/\<def_col_tab\>/iw_def_col_tab/g
+	s/\<IMG_RGB\>/IW_RGB/g
+	s/\<IMG_BGR\>/IW_BGR/g
+	s/\<IMG_YUV\>/IW_YUV/g
+	s/\<IMG_YUV_CAL\>/IW_YUV_CAL/g
+	s/\<IMG_HSV\>/IW_HSV/g
+	s/\<IMG_LUV\>/IW_LUV/g
+	s/\<IMG_LAB\>/IW_LAB/g
+	s/\<IMG_BW\>/IW_BW/g
+	s/\<IMG_GRAY\>/IW_GRAY/g
+	s/\<IMG_INDEX\>/IW_INDEX/g
+	s/\<IMG_COLFORMAT_MAX\>/IW_COLFORMAT_MAX/g
+	s/\<IMG_COLMAX\>/IW_COLMAX/g
+	s/\<IMG_COLCNT\>/IW_COLCNT/g
+	s/\<imgColorText\>/iwColorText/g
+	s/\<IMG_COLOR_TEXT\>/IW_COLOR_TEXT/g
+	s/\<_imgFileData\>/_iwImgFileData/g
+	s/\<imgFileData\>/iwImgFileData/g
+	s/\<_imgAvi\>/_iwMovie/g
+	s/\<imgAvi\>/iwMovie/g
+	s/\<imgColor\>/iwColor/g
+	s/\<IMG_FORMAT_UNKNOWN\>/IW_IMG_FORMAT_UNKNOWN/g
+	s/\<IMG_FORMAT_PNM\>/IW_IMG_FORMAT_PNM/g
+	s/\<IMG_FORMAT_PNG\>/IW_IMG_FORMAT_PNG/g
+	s/\<IMG_FORMAT_JPEG\>/IW_IMG_FORMAT_JPEG/g
+	s/\<IMG_FORMAT_AVI\>/IW_IMG_FORMAT_AVI/g
+	s/\<IMG_FORMAT_VECTOR\>/IW_IMG_FORMAT_VECTOR/g
+	s/\<IMG_FORMAT_SVG\>/IW_IMG_FORMAT_SVG/g
+	s/\<imgFormat\>/iwImgFormat/g
+	s/\<imgFormatText\>/iwImgFormatText/g
+	s/\<imgFormatTextBM\>/iwImgFormatTextBM/g
+	s/\<IMG_8U\>/IW_8U/g
+	s/\<IMG_16U\>/IW_16U/g
+	s/\<IMG_32S\>/IW_32S/g
+	s/\<IMG_FLOAT\>/IW_FLOAT/g
+	s/\<IMG_DOUBLE\>/IW_DOUBLE/g
+	s/\<imgType\>/iwType/g
+	s/\<imgImage\>/iwImage/g
+	s/\<imgTypeSize\>/iwTypeSize/g
+	s/\<imgTypeMin\>/iwTypeMin/g
+	s/\<imgTypeMax\>/iwTypeMax/g
+	s/\<IMG_TYPE_SIZE\>/IW_TYPE_SIZE/g
+	s/\<IMG_TYPE_MIN\>/IW_TYPE_MIN/g
+	s/\<IMG_TYPE_MAX\>/IW_TYPE_MAX/g
+	s/\<IMG_STATUS_OK\>/IW_IMG_STATUS_OK/g
+	s/\<IMG_STATUS_OPEN\>/IW_IMG_STATUS_OPEN/g
+	s/\<IMG_STATUS_READ\>/IW_IMG_STATUS_READ/g
+	s/\<IMG_STATUS_WRITE\>/IW_IMG_STATUS_WRITE/g
+	s/\<IMG_STATUS_MEM\>/IW_IMG_STATUS_MEM/g
+	s/\<IMG_STATUS_FORMAT\>/IW_IMG_STATUS_FORMAT/g
+	s/\<IMG_STATUS_ERR\>/IW_IMG_STATUS_ERR/g
+	s/\<IMG_STATUS_MAX\>/IW_IMG_STATUS_MAX/g
+	s/\<imgStatus\>/iwImgStatus/g
+	s/\<IMG_FREE_PLANE\>/IW_IMG_FREE_PLANE/g
+	s/\<IMG_FREE_PLANEPTR\>/IW_IMG_FREE_PLANEPTR/g
+	s/\<IMG_FREE_CTAB\>/IW_IMG_FREE_CTAB/g
+	s/\<IMG_FREE_STRUCT\>/IW_IMG_FREE_STRUCT/g
+	s/\<IMG_FREE_DATA\>/IW_IMG_FREE_DATA/g
+	s/\<IMG_FREE_ALL\>/IW_IMG_FREE_ALL/g
+	s/\<imgFree\>/iwImgFree/g
+	s/\<img_allocate\>/iw_img_allocate/g
+	s/\<img_alloc_planeptr\>/iw_img_alloc_planeptr/g
+	s/\<img_init\>/iw_img_init/g
+	s/\<img_new\>/iw_img_new/g
+	s/\<img_new_alloc\>/iw_img_new_alloc/g
+	s/\<img_free\>/iw_img_free/g
+	s/\<img_copy\>/iw_img_duplicate/g
+	s/\<img_duplicate\>/iw_img_duplicate/g
+	s/\<img_data_create\>/iw_img_data_create/g
+	s/\<img_data_free\>/iw_img_data_free/g
+	s/\<img_data_set_avi\>/iw_img_data_set_movie/g
+	s/\<img_data_set_quality\>/iw_img_data_set_quality/g
+	s/\<img_load\>/iw_img_load/g
+	s/\<img_load_interleaved\>/iw_img_load_interleaved/g
+	s/\<img_close_avi\>/iw_movie_close/g
+	s/\<img_open_avi\>/iw_movie_open/g
+	s/\<img_read_avi\>/iw_movie_read/g
+	s/\<img_get_framerate\>/iw_movie_get_framerate/g
+	s/\<img_get_framecnt\>/iw_movie_get_framecnt/g
+	s/\<img_write_avi\>/iw_movie_write/g
+	s/\<img_save_get_format\>/iw_img_save_get_format/g
+	s/\<img_save_format\>/iw_img_save/g
+	s/\<img_get_buffer\>/iw_img_get_buffer/g
+	s/\<img_release_buffer\>/iw_img_release_buffer/g
+	s/\<img_col_debug\>/iw_img_col_debug/g
+	s/\<img_downsample\>/iw_img_downsample/g
+	s/\<img_resize\>/iw_img_resize/g
+	s/\<img_resize_raw\>/iw_img_resize_raw/g
+	s/\<img_border\>/iw_img_border/g
+	s/\<img_copy_border\>/iw_img_copy_border/g
+	s/\<img_median\>/iw_img_median/g
+	s/\<img_medianBW\>/iw_img_medianBW/g
+	s/\<img_max\>/iw_img_max/g
+	s/\<img_histeq\>/iw_img_histeq/g
+	s/\<img_cstretch\>/iw_img_cstretch/g
+	s/\<img_sobel\>/iw_img_sobel/g
+	s/\<img_rgbToYuvVis\>/iw_img_rgbToYuvVis/g
+	s/\<img_YuvToRgb\>/iw_img_yuvToRgbVis/g
+	s/\<img_fillPoly\>/iw_img_fillPoly/g
+	s/\<img_fillPoly_raw\>/iw_img_fillPoly_raw/g
+	s/\<regMode\>/iwRegMode/g
+	s/\<REGION_INCLUSION\>/IW_REG_INCLUSION/g
+	s/\<REGION_NO_ZERO\>/IW_REG_NO_ZERO/g
+	s/\<REG_THIN_OFF\>/IW_REG_THIN_OFF/g
+	s/\<REG_THIN_ABS\>/IW_REG_THIN_ABS/g
+	s/\<REG_THIN_DIST\>/IW_REG_THIN_DIST/g
+	s/\<regThinning\>/iwRegThinning/g
+	s/\<regCalcData\>/iwRegCalcData/g
+	s/\<regCOMinfo\>/iwRegCOMinfo/g
+	s/\<regRegion\>/iwRegion/g
+	s/\<regionDataFunc\>/iwRegDataFunc/g
+	s/\<REGION_DATA_SET\>/IW_REG_DATA_SET/g
+	s/\<REGION_DATA_CONVERT\>/IW_REG_DATA_CONVERT/g
+	s/\<REGION_DATA_IDENT\>/IW_REG_DATA_IDENT/g
+	s/\<region_label\>/iw_reg_label/g
+	s/\<region_label_with_calc\>/iw_reg_label_with_calc/g
+	s/\<reg_data_create\>/iw_reg_data_create/g
+	s/\<reg_data_free\>/iw_reg_data_free/g
+	s/\<reg_data_set_images\>/iw_reg_data_set_images/g
+	s/\<reg_data_set_minregion\>/iw_reg_data_set_minregion/g
+	s/\<reg_data_set_mode\>/iw_reg_data_set_mode/g
+	s/\<reg_data_set_thinning\>/iw_reg_data_set_thinning/g
+	s/\<region_calc_data\>/iw_reg_calc_data/g
+	s/\<region_calc\>/iw_reg_calc/g
+	s/\<region_calc_img\>/iw_reg_calc_img/g
+	s/\<region_stretch\>/iw_reg_stretch/g
+	s/\<region_boundingbox\>/iw_reg_boundingbox/g
+	s/\<region_upsample\>/iw_reg_upsample/g
+	s/\<region_free\>/iw_reg_free/g
+	s/\<region_copy\>/iw_reg_copy/g
+	s/\<dacs_entry\>/iw_dacs_entry/g
+	s/\<session_get_name\>/iw_session_get_name/g
+	s/\<session_set_name\>/iw_session_set_name/g
+	s/\<session_clear_session\>/iw_session_clear/g
+	s/\<session_save\>/iw_session_save/g
+	s/\<session_load\>/iw_session_load/g
+	s/\<session_set_prev\>/iw_session_set_prev/g
+	s/\<session_set\>/iw_session_set/g
+	s/\<session_find\>/iw_session_find/g
+	s/\<session_remove\>/iw_session_remove/g
+	s/\<GHYP_TITLE\>/IW_GHYP_TITLE/g
+	s/\<OUTPUT_STATUS_DONE\>/IW_OUTPUT_STATUS_DONE/g
+	s/\<OUTPUT_STATUS_CANCEL\>/IW_OUTPUT_STATUS_CANCEL/g
+	s/\<output_sync\>/iw_output_sync/g
+	s/\<output_stream\>/iw_output_stream/g
+	s/\<output_out_image\>/iw_output_image/g
+	s/\<output_out_regions\>/iw_output_regions/g
+	s/\<output_out_hypos\>/iw_output_hypos/g
+	s/\<output_out_status\>/iw_output_status/g
+	s/\<output_register_stream\>/iw_output_register_stream/g
+	s/\<output_register_function_with_data\>/iw_output_register_function_with_data/g
+	s/\<output_register_function\>/iw_output_register_function/g
+	s/\<output_register\>/iw_output_register/g
+	s/\<output_get_output\>/iw_output_get_output/g
+	s/\<output_set_name\>/iw_output_set_name/g
+	s/\<output_cleanup\>/iw_output_cleanup/g
+	s/\<output_init\>/iw_output_init/g
+	s/\<GyuvToRgb.h\>/Gcolor.h/g
+	s/\<GrgbToYuv.h\>/Gcolor.h/g
+	}
+	' $backup > $file
+
+    if cmp -s $backup $file; then
+	rm $backup
+    else
+	echo Changed $file
+    fi
+
+    grep -nw 'act_img' $file /dev/null | sed 's/^\(.*:[0-9]\+:\).*/\1 act_img is removed/'
+    grep -nw 'img_save' $file /dev/null | sed 's/^\(.*:[0-9]\+:\).*/\1 img_save() is removed/'
+    grep -nw 'img_save_raw' $file /dev/null | sed 's/^\(.*:[0-9]\+:\).*/\1 img_save_raw() is removed/'
+    grep -nw 'img_save_interleaved_raw' $file /dev/null | sed 's/^\(.*:[0-9]\+:\).*/\1 img_save_interleaved_raw() is removed/'
+}
+
+while [ $# -gt 0 ]; do
+    file=$1
+    shift
+    iw_api_update $file
+done

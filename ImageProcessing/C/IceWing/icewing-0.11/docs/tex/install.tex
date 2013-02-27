@@ -1,0 +1,489 @@
+\chapter{Short overview}
+
+\paragraph{What's all about?}\hfill\\
+\index{iceWing}
+\icewing{}, an {\bf I}ntegrated {\bf C}ommunication {\bf E}nvironment
+{\bf W}hich {\bf I}s {\bf N}ot {\bf G}esten\index{Gesten} (This is
+a reference to an older program, the predecessor of \icewing{}.) is
+a graphical plugin shell. It is optimized for image processing and
+vision system development. But its use in totally different fields
+of research is as well possible, e.g. audio-stream processing.
+Predefined or self-written plugins operate hierarchically on data
+provided by other plugins and can also generate new data-streams,
+allowing flexible communication and interaction between these
+plugins. An important predefined plugin is the grabbing plugin,
+which can read images from the disk in various image formats, from
+grabber-hardware, e.g. V4L2-devices or FireWire, and also from
+external, network wide processes via DACS streams.
+
+Not being only a batch-plugin-shell \icewing{} is also a highly
+customizable GUI platform for the plugins: It has a list of given
+GUI-elements and allows the plugins to simply make use of them. So
+plugins can show the user their current status and can let the user
+change parameters on the fly. Moreover methods of easy visualization
+of plugin results are available. The plugins can open any number of
+windows and display in these windows any data in a graphical form.
+
+\paragraph{Where to get \icewing{}?}
+\begin{itemize}
+\item \index{iceWing!homepage} The homepage for \icewing{} can be found at\\
+  \hspace*{4ex}\url{http://icewing.sourceforge.net}
+\item \index{iceWing!mailing lists} There are two mailing lists
+  dedicated to iceWing user and development discussion. More infos
+  about these mailing lists can be found at\\
+  \hspace*{4ex}\url{http://sourceforge.net/mail/?group_id=151242}\\
+  Please use these lists for any questions, patches, or anything
+  else concerning \icewing{}.
+\item Additionally, the main author can be reached at\\
+  \hspace*{4ex}floemker@techfak.uni-bielefeld.de
+\end{itemize}
+
+\paragraph{Who did \icewing{}?}\hfill\\
+Program:\\
+  \hspace*{4ex}Frank L\"omker, floemker@techfak.uni-bielefeld.de\\
+This documentation:\\
+  \hspace*{4ex}Frank L\"omker, floemker@techfak.uni-bielefeld.de\\
+  \hspace*{4ex}Initial installation and user guide: Andreas H\"uwel, andreas.huewel@gmx.de\\
+  \hspace*{4ex}Programming guide translation of V0.8.1: Ilker Savas
+
+\paragraph{License}\hfill\\
+\icewing{} is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+\icewing{} is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+USA.
+
+\chapter{\Index{Installation}}
+\label{chap:installation}
+
+\section{Requirements}
+
+\paragraph{Libraries needed}
+
+\icewing{} is targeted at Unix-like operating systems and was
+actually tested on Linux, Alpha/True64, Solaris, and Mac OSX. For
+compiling and using it some programs and libraries must be
+installed:
+
+\begin{itemize}
+\item Basic commands like bunzip2, tar, make, C compiler
+  (probably gcc) - nothing that a normal Unix installation does not
+  provide.
+\item X11
+\item \Index{GTK+}: For its interface \icewing{} can use Version 1.2
+  (tested for version \textgreater=1.2.5) as well as version V2.x of
+  GTK+ (see ``\url{http://www.gtk.org}'').
+\item \Index{CMake}: For configuring and for generating build files
+  CMake can be used (see ``\url{http://www.cmake.org}'').
+  Alternatively, there are hand written makefiles, which can be
+  adopted to the respective environment.
+\end{itemize}
+
+Additional \emph{optional} libraries extend the functionality of
+\icewing{}:
+\begin{itemize}
+\item \Index{gdk-pixbuf}: Enables loading of additional image
+  formats besides PNM and PNG. This library is only needed if you
+  compile against GTK+ V1.2. Since GTK+ V2.0 this library is
+  integrated into GTK and thus always automatically
+  available. Versions \textgreater= 0.8 where tested.
+\item \Index{libjpeg}: Enables JPEG image saving and loading and
+  saving of AVI/MJPEG movies.
+\item \Index{libpng}: Enables PNG-saving and loading of PNG images
+  with a depth of 16 bit.
+\item \Index{libz}: Is needed by the above optional PNG library.
+
+  When the jpeg and png libraries are not available, \icewing{} can
+  only save the various PNM formats and AVI movies with a raw
+  uncompressed codec.
+\item \Index{libAVVideo}: On Alpha/True64 systems (and only there)
+  the libAVVideo library is needed to access grabber hardware. This
+  library is written by the AG-AI and supports grabbing of images
+  via the Multi Media Extension MME. Composite and SVideo cameras
+  are supported.
+\item \Index{libraw1394}, \Index{libdc1394}\label{page:libdc1394}:
+  These two libraries enable grabbing from FireWire (IEEE1394)
+  cameras supporting the ``Digital Camera Specification''. See
+  ``\url{http://ieee1394.wiki.kernel.org}'' and
+  ``\url{http://sourceforge.net/projects/libdc1394/}'' for the
+  libraries. Version 2 of the libdc1394 library as well as version
+  1.2 is supported.
+\item \Index{Aravis library}\index{libaravis}: Aravis is a library
+  for video acquisition using \Index{GenICam} cameras
+  (``\url{http://www.genicam.org}''). It currently implements an
+  ethernet camera protocol used for industrial cameras. See
+  ``\url{http://live.gnome.org/Aravis}'' for details about this
+  library. Versions 0.1.14 and 0.1.15 were tested.
+\item \Index{NET iCube} NETUSBCAM: This library enables
+  grabbing images from cameras supporting the interface from
+  NET. See ``\url{http://www.net-gmbh.com}'' for the driver and the
+  cameras. Versions 1.23 till 1.25 were tested.
+\item \Index{MATRIX VISION} MV impact acquire: This library enables
+  grabbing images from cameras supporting the interface from MATRIX
+  VISION. See ``\url{http://www.matrix-vision.com}'' for the driver
+  and the cameras. Versions from 1.12.44 till 2.0.5 were tested.
+\item \Index{IDS Imaging} uEye: This library enables grabbing images
+  from cameras supporting the interface from IDS Imaging. See
+  ``\url{http://www.ids-imaging.com}'' for the driver and the
+  cameras. Versions 3.90 and 4.00 were tested.
+\item \Index{unicap}: Unicap provides a uniform API for different
+  kinds of video capture devices, e.g. IEEE1394, Video for Linux,
+  and some other. See ``\url{http://unicap-imaging.org}'' for
+  details about this library. Version 0.9.14 was tested.
+\item \Index{libv4lconvert}: libv4lconvert from the v4l-utils
+  package provides conversion functions for different additional
+  pixel formats for the V4L2 grabbing driver. See
+  ``\url{http://git.linuxtv.org/v4l-utils.git}'' for details about
+  this library. Versions 0.8.6 till 0.8.8 were tested.
+\item \Index{FFmpeg}: Enables loading of a wide variety of video
+  formats and saving of AVI/FFV1 and AVI/MPEG-4 movies. See
+  ``\url{http://www.ffmpeg.org}'' for further details about this
+  library. Without the FFmpeg library, \icewing{} can only handle
+  AVI files with the motion jpeg codec (if the jpeg library is
+  available) and AVI files with RAW images in the YVU444P or YUV420P
+  color spaces.
+
+  During development of \icewing{} different released versions
+  starting from version 0.5 (3. of March, 2009) till version 1.0
+  (28. of September, 2012) and different SVN and GIT snapshots till
+  1. of October, 2012 where used. You can find the FFmpeg SVN
+  snapshot version from June 2009 at the \icewing{} homepage. Older
+  versions, especially the old release version 0.4.9-pre1 are too
+  old and will \emph{not} work.
+\end{itemize}
+
+\emph{Attention:} You will always need the development files,
+especially header files, for the different libraries. We will show
+for RedHat packages (rpm) how to verify that everything is
+installed. Debian packages are quite similar. You can easily check
+with the following shell command
+\sS
+\shellcom{rpm -qa | grep gtk}
+\sE
+which packages are installed and which version that libraries have.
+\icewing{} needs the headers, too, and often separate developer packets
+provide them. If you compile your own libraries from sources, you
+have to add the headers into the default-include path, so \icewing{}
+will find them. After verifying all this, you only need to get the
+\icewing{} tarball ``icewing-version.tar.bz2''.
+
+\paragraph{Further stuff}
+
+You can use \index{DACS}\dacs{} for your own \icewing{} plugins to
+communicate with other external net wide processes. It works quite
+similar to Corba. You do {\em not} need \dacs{} for any \icewing{}
+internal communication (\icewing{} - plugin, plugin - plugin) or to
+e.g. access files of the system. Additionally, \icewing{} has
+integrated support for reading/publishing images to/from other
+programs and for remote control of plugin sliders via \dacs{}. If
+\dacs{} is not available, these features can be disabled during
+compiling.
+
+More information about \dacs{} can be found in the Web under this
+address:
+\begin{quotation}
+\url{http://www.techfak.uni-bielefeld.de/ags/ni/projects/dacs/}
+\end{quotation}
+Many details of \dacs{} are also in the dissertation of Niels
+Jungclaus \cite{Jungclaus1998-IVS}.
+
+
+%######################
+\section{Installation}
+
+Lets assume you have the \icewing{} tarball in ``./''. Then simply
+start by
+\sS
+\shellcom{bunzip2 -c icewing-version.tar.bz2 | tar -xv}
+\shellcom{cd icewing-version}
+\sE
+where version is the particular \icewing{} version number you are
+using.
+
+To proceed, you have two distinct possibilities, as there are two
+installation procedures available: Using CMake to configure
+\icewing{} and generate necessary build files or to adapt and use
+the hand written makefiles.
+
+\subsection{Using \Index{CMake} for \icewing{} building}
+
+CMake, available from \url{http://www.cmake.org}, is a utility to
+configure a software package and generate build files for it. If you
+would like to use it for \icewing{}, verify that you have CMake
+installed. After that go to the cmake directory inside the
+\icewing{} sources and start the cmake utility, i.e.:
+\sS
+\shellcom{cd \{wherever your sources are\}/cmake}
+\shellcom{cmake ..}
+\sE
+This will generate the necessary build files for building \icewing{}
+in the cmake subdirectory and for installing it to
+``/usr/local''. Compiling and installing is then done by
+\sS
+\shellcom{make}
+\shellcom{make install}
+\sE
+inside the cmake subdirectory. Optionally, ``\verb|VERBOSE=1 make|''
+will show the exact commands that are run during the make
+process. ``\verb|make install|'' will create a file
+``\verb|install_manifest.txt|'' in the cmake directory, which
+contains the list of all installed files.
+
+Additionally, you can pass different variable settings to CMake with
+the ``-D'' command line to influence the configuration step, i.e.:
+``\verb|cmake -DNAME_OF_THE_VARIABLE=value ..|''. Important
+available variables are:
+\begin{description}
+\item[CMAKE\_INSTALL\_PREFIX=PATH:] The installation prefix, e.g.
+  ``\verb|cmake -DCMAKE_INSTALL_PREFIX=/opt/icewing ..''| will
+  install \icewing{} to ``/opt/icewing''. The default is
+  ``/usr/local''.
+\item[WITH\_GRABBER=ON\textbar{}OFF:] If OFF, \icewing{} will have
+  \emph{no} support for grabbing images from a camera, independent
+  of any installed libraries. Otherwise, depending on the found
+  libraries, support for different grabber hardware will be
+  integrated. The default is ON.
+
+  On Alpha/True64 systems the libAVVideo is needed for all grabber
+  access. On Linux, support for Composite and SVideo cameras is
+  based on the ``Video for Linux Two'' interface (see
+  ``\url{http://linuxtv.org/wiki/}'') and directly integrated in
+  \icewing{}. If available, the libv4lconvert library (see
+  ``\url{http://git.linuxtv.org/v4l-utils.git}'') is used to support
+  different additional pixel formats, pixel formats which are
+  sometimes used be web cams.
+
+  FireWire (IEEE1394) cameras supporting the ``Digital Camera
+  Specification'' are supported via the raw1394 and dc1394
+  libraries. If available version 2 of the dc1394 library is used,
+  otherwise version 1.2 is used. Cameras conforming to the NET iCube
+  interface are supported if the iCube NETUSBCAM library can be
+  found. Cameras conforming to the MATRIX VISION impact acquire
+  interface are supported if the impact aquire libraries can be
+  found. Cameras conforming to the IDS Imaging uEye interface are
+  supported if the uEye libraries can be found. Cameras using the
+  GenICam standard are supported by the aravis library. Additional
+  hardware is supported if the unicap library is available.
+\item[WITH\_GTK1=ON\textbar{}OFF:] If ON, force using GTK+ V1.2 for
+  the user interface. If OFF, first try to find GTK+ V2.x and fall
+  back to GTK+ V1.2 if V2.x can not be found. The default is OFF.
+\item[CMAKE\_BUILD\_TYPE=STRING:] Type of build. The possible
+  choices are: None (CMAKE\_CXX\_FLAGS and CMAKE\_C\_FLAGS are
+  used), Debug, Release, RelWithDebInfo, and MinSizeRel. The default
+  is ``RelWithDebInfo'', which uses ``-O2 -g'' if gcc is used as the
+  compiler.
+\end{description}
+
+CMake will try to find all necessary and supported libraries
+automatically. If you want to disable this and prevent the usage of
+a library, you can do so by using one of the following variables:
+\begin{description}
+\item[WITH\_DACS=ON\textbar{}OFF:] Build with DACS support if DACS is installed.
+\item[WITH\_DOC=ON\textbar{}OFF:] Build the iceWing PDF manual.
+\item[WITH\_XCF=ON\textbar{}OFF:] Build XCF communication support.
+\item[WITH\_PNG=ON\textbar{}OFF:] Build PNG image saving support.
+\item[WITH\_JPEG=ON\textbar{}OFF:] Build JPEG image saving support.
+\item[WITH\_ARAVIS=ON\textbar{}OFF:] Build aravis grabbing support.
+\item[WITH\_FIRE2=ON\textbar{}OFF:] Build Firewire grabbing support.
+\item[WITH\_ICUBE=ON\textbar{}OFF:] Build NET iCube grabbing support.
+\item[WITH\_UNICAP=ON\textbar{}OFF:] Build unicap grabbing support.
+\item[WITH\_LIBV4L=ON\textbar{}OFF:] Use libv4lconvert in the V4L2 grabbing driver.
+\item[WITH\_MVIMPACT=ON\textbar{}OFF:] Build MATRIX VISION mvDeviceManager grabbing support.
+\item[WITH\_UEYE=ON\textbar{}OFF:] Build IDS uEye grabbing support.
+\item[WITH\_FFMPEG=ON\textbar{}OFF:] Build extended movie loading/saving support.
+\item[WITH\_READLINE=ON\textbar{}OFF:] Build icewing-control command line tool.
+\end{description}
+
+If you have headers and libraries installed in
+non-standard locations that CMake cannot find, then set the
+following two environment variables. Despite the similar naming
+convention, these will not work as arguments on the cmake command
+line:
+\begin{description}
+\item[CMAKE\_INCLUDE\_PATH:] E.g. export CMAKE\_INCLUDE\_PATH=/sw/include
+\item[CMAKE\_LIBRARY\_PATH:] E.g. export CMAKE\_LIBRARY\_PATH=/sw/lib 
+\end{description}
+
+After the ``make install'', if the new ``icewing''-executable is in
+the execute-path, you can right away start ``icewing'', the
+executable (see section~\ref{sec:quicktour} ``quicktour''). If you
+are interested in what is where in this installation, have a look at
+section~\ref{sec:p_filesystem} ``filesystem hierarchy''.
+
+\subsection{Using makefiles for \icewing{} building}
+
+Alternatively to the CMake build system, hand written makefiles are
+available for compiling the \icewing{} package. To use these, you have
+to edit the \Index{Makefile} to adopt it to your system and in- or
+exclude the support for additional packages. Mostly it will be
+uncommenting some few lines that you probably will not need on your
+system.
+
+\begin{description}
+
+\item[PREFIX:]
+  The installation prefix, i.e. where \icewing{} will be
+  installed during ``make install''. The default is ``/usr/local''.
+
+\item[FLAGS:]
+  Eventually you must adopt the compiler flags to your
+  hardware. E.g.: You might not have a Pentium/Athlon processor?
+
+\item[WITH\_GTK1:]
+  If WITH\_GTK1 is defined GTK+ V1.2 is used for the user
+  interface. Otherwise \icewing{} uses the newer 2.x GTK+ version.
+
+\item[WITH\_GRABBER, WITH\_ARAVIS, WITH\_FIRE,]
+  \textsf{\textbf{WITH\_ICUBE, WITH\_MVIMPACT, WITH\_UEYE,
+      WITH\_UNICAP, WITH\_LIBV4L:}}
+  If included, \icewing{} will have support for grabbing images from
+  a camera. On Alpha/True64 systems an external library -- the
+  libAVVideo -- is needed. The value given to WITH\_GRABBER
+  specifies the location of the libAVVideo.
+
+  On Linux support for image grabbing is directly integrated into
+  \icewing{}. This gets activated if WITH\_GRABBER is
+  defined. Composite and SVideo cameras are supported with the help
+  of the ``Video for Linux Two'' interface (see
+  ``\url{http://linuxtv.org/wiki/}''). If WITH\_LIBV4L is defined
+  the libv4lconvert library (see
+  ``\url{http://git.linuxtv.org/v4l-utils.git}'') is used to support
+  different additional pixel formats, pixel formats which are
+  sometimes used be web cams. WITH\_LIBV4L gives the location of the
+  libv4lconvert library and header files.
+
+  If additionally WITH\_FIRE is defined FireWire (IEEE1394) cameras
+  supporting the ``Digital Camera Specification'' are supported as
+  well. WITH\_FIRE gives the location of the needed raw1394 and
+  dc1394 libraries and header files, for example ``/usr'' or
+  ``/usr/local''. If WITH\_FIRE2 is defined, version 2 of the dc1394
+  library is used instead of version 1.2. WITH\_ICUBE activates
+  support for cameras conforming to the NET iCube
+  interface (see ``\url{http://www.net-gmbh.com}''). WITH\_ICUBE
+  gives the location of the iCube NETUSBCAM library and header
+  files. WITH\_MVIMPACT activates support for cameras conforming to
+  the MATRIX VISION impact acquire interface (see
+  ``\url{http://www.matrix-vision.com}''). WITH\_MVIMPACT gives the
+  location of the impact aquire libraries and header
+  files. WITH\_UEYE activates support for cameras conforming to the
+  IDS uEye interface (see
+  ``\url{http://www.ids-imaging.com}''). WITH\_UEYE gives the
+  location of the uEye libraries and header files. WITH\_ARAVIS
+  additionally to WITH\_GRABBER activates support for the aravis
+  library, which supports cameras conforming to the GenICam standard
+  (see ``\url{http://live.gnome.org/Aravis}''). WITH\_ARAVIS gives
+  the location of the aravis library and header files. By defining
+  WITH\_UNICAP additionally to WITH\_GRABBER support for the unicap
+  library gets integrated. WITH\_UNICAP gives the location of the
+  unicap library and header files (see
+  ``\url{http://unicap-imaging.org}'').
+
+\item[WITH\_DACS:]
+  If included, \icewing{} will have support for \dacs{}, which is
+  like Corba for network wide interprocess
+  communication. Especially, \icewing{} will be able to send and
+  receive images and widget configurations via \dacs{} communication
+  channels.
+
+\item[WITH\_GPB:]
+  Enables support for the gdk-pixbuf library to load images of other
+  formats than PNM and PNG.
+
+\item[WITH\_JPG, WITH\_PNG, WITH\_ZLIB:]
+  Enables further image saving formats and enhances image loading by
+  using the libjpeg, libpng, and libz libraries.
+
+\item[WITH\_FFMPEG:]
+  Enables loading of a wide variety of video formats and saving of
+  two additional video formats by using the FFmpeg
+  library. WITH\_FFMPEG gives the location of the library and the
+  corresponding header files.
+\end{description}
+
+\paragraph{``make'' it all}
+After adopting the Makefile, you can build the installation files
+from the sources:
+\sS
+\shellcom{cd \{wherever your sources are\} }
+\shellcom{make depend}
+\shellcom{make}
+
+You must now login as admin/root, if \$\{PREFIX\} is not writable for
+the current user. The Makefile expects the directory that is named
+in \$\{PREFIX\} to be existing - if not:
+\sS
+\shellcom{mkdir \$\{PREFIX\}}
+\sE
+The installation is now fully prepared. Now the time for 
+installation has come!
+\sS
+\shellcom{cd \{wherever your sources are\}}
+\shellcom{make install}
+\sE
+To all the cautious admins: 
+You eventually want to check the groups and rights of the new dirs
+now.
+
+{\em That's it!}
+For further details about what was done, just have insight into the
+installation log file, which is located at
+``\$\{PREFIX\}/share/log/iceWing.log''.
+
+If the new ``icewing''-executable is in the execute-path, you can
+right away start ``icewing'', the executable (see
+section~\ref{sec:quicktour} quicktour). If you are interested in what is
+where in this installation, have a look at
+section~\ref{sec:p_filesystem} Filesystem.
+
+\paragraph{Troubleshooting}
+
+Check the output for errors, also the installation-logfile. You are
+sure, that you installed the needed libraries properly, but
+\sS
+\shellcom{make}
+\sE
+produced errors like:
+\begin{quote}
+/bin/sh: gdk-pixbuf-config: command not found
+\end{quote}
+
+Let's again assume you used the RedHat package named
+``gdk-pixbuf-devel'' (well, Debian packages are treated similar).
+Then check via
+\sS
+\shellcom{rpm -ql gdk-pixbuf-devel | grep gdk-pixbuf-config}
+\sE
+or with {\em full} search
+\sS
+\shellcom{find / -name gdk-pixbuf-config}
+\sE
+{\em where} the needed packed-files got installed.
+Maybe they are simply not in the default-execute path!?
+
+Assume you find ``gdk-pixbuf-config'' 
+in ``/opt/gnome/bin/gdk-pixbuf-config''. With the bash-shell
+you can replace the compiling 
+\sS
+\shellcom{make}
+\sE
+command by:
+\sS
+\shellcom{PATH=\$PATH:/opt/gnome/bin make}
+\sE
+Or you change the Makefile entry ``GDK\_PIXBUF = gdk-pixbuf-config''
+to ``GDK\_PIXBUF = /opt/gnome/bin/gdk-pixbuf-config''.
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../iceWing"
+%%% fill-column: 68
+%%% End: 

@@ -1,0 +1,58 @@
+----------------------------------------------------------------
+                      iceWing Version 0.11
+
+                         Frank Loemker
+        Applied Computer Science, Faculty of Technology,       
+                 Bielefeld University, Germany
+----------------------------------------------------------------
+
+iceWing is a graphical plugin shell. Predefined or self-written
+plugins operate hierarchically on pre-given data and can also generate
+new data-streams. For image support there is e.g. a predefined plugin
+for reading images from grabber-hardware, from the file system and
+also from external, network wide processes.
+
+Moreover, iceWing provides functions to easily create a user interface
+for the plugins and to allow them to visualize results. The plugins
+can create different widgets for data input and can open any number of
+windows and display in these windows any data in a graphical form.
+
+For further documentation and installation instructions please refer
+to the file docs/icewing.pdf.
+
+iceWing contains some code from the following projects:
+  GIMP       : Functions for image resizing. The original functions are
+               released under the GPL license, see main/image.c for the
+               license and the copyright.
+  transcode  : Option parsing for the grabber interface. The original
+               functions are released under the GPL license, see
+               avvideo/AVOptions.c for the license and the copyright.
+  OpenCV     : Rendering of ellipses and circles. For the license and
+               the copyright see gui/Grender.c.
+  MJPEG Tools: AVI-MJPEG loading and saving. These sources are released
+               under the GPL license, see gui/avi/ for the original
+               license and the copyright.
+  X11R6      : Rendering of filled polygons. The original functions are
+               released under the BSD license, see gui/Gpolygon.c for the
+               license and the copyright.
+  CMVision   : Grabbing via Video4Linux II devices is based on code
+               from CMVision Version 1.2, which is released under the
+               LGPL license. See avvideo/v4l2_old.c for the license.
+
+LICENSE
+-------
+
+iceWing is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+iceWing is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+USA.

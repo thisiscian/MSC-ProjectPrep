@@ -1,0 +1,159 @@
+#!/bin/bash
+
+# icewing-docgen
+#
+# iceWing plugin document extractor
+# (c) 1999-2006 by Frank Loemker
+#
+# Released under the GNU General Public License, version 2 or later.
+
+bindir="@BINDIR@"
+
+TXT="Readme.txt"
+HTML="Readme.html"
+HELP=`$bindir/icewing-config --datadir`"/plugins.help"
+
+TMPFILE=/tmp/$$_icewing_doc.txt
+DIR=`$bindir/icewing-config --libdir`
+
+if test -n "$1"; then
+    cat << EOF
+icewing-docgen, (c) 1999-2006 by Frank Loemker
+
+Collect help messages from all iceWing plugins from
+"$DIR"
+and store them in "$TXT", "$HTML", and "$HELP".
+
+Usage: $0
+EOF
+    exit 1
+fi
+
+# ### Get all plugins and all instance names ###########
+
+echo "Getting plugin and instance names..."
+
+libs=`find $DIR -type f -name "*.so"|egrep -v 'libmin.*\.so'|sort`
+libs2=`icewing -h 2>&1 | awk "{if (found) print}/Currently loaded/{found=1}"|sort`
+libs=`echo $libs $libs2`
+
+i=0
+for l in $libs; do
+    name=`icewing -l $l -h 2>&1| awk "/Currently loaded/{found=1}{if (found) print}"| grep "^     "`
+    name=`echo $name|sed 's/ .*//g'`
+    if test -z "$name"; then
+	names[$i]="NoName$i"
+    else
+	names[$i]=$name
+    fi
+    i=$((i+1))
+done
+
+# #################### ASCII Header ####################
+cat >$TXT << EOF
+Installed iceWing plugins:
+(Generated with: $0 $@
+ LD_LIBRARY_PATH=$LD_LIBRARY_PATH)
+
+EOF
+
+if test $? != 0; then
+    echo Unable to write to \"$TXT\", exiting.
+    exit 1
+fi
+# #################### HTML Header #####################
+cat >$HTML << EOF
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<a name="top"></a>
+<head>
+<title>Installed iceWing plugins</title>
+</head>
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Installed iceWing plugins</h1>
+(Generated with: $0 $@<br>
+ LD_LIBRARY_PATH=$LD_LIBRARY_PATH)
+
+<ol>
+EOF
+
+if test $? != 0; then
+    echo Unable to write to \"$HTML\", exiting.
+    exit 1
+fi
+
+i=0
+for l in $libs; do
+    name=${names[$i]}
+    lib=`echo $l|sed "s#$DIR/##"`
+    echo >>$HTML "<li><a href=\"#$name\">" $lib" | $name</a></li>"
+    i=$((i+1))
+done
+echo >>$HTML "</ol>"
+echo >>$HTML "<hr>"
+
+# #################### Main loop #######################
+
+echo "Getting help messages..."
+
+i=0
+for l in $libs; do
+    name=${names[$i]}
+    lib=`echo $l|sed "s#$DIR/##"`
+
+    eval icewing -t 0 -l $l -a $name -h -sp1 AbCdEfGhIj  >$TMPFILE 2>&1
+    if grep -q " Segmentation fault" $TMPFILE; then
+	grep -v " Segmentation fault" $TMPFILE >${TMPFILE}2
+	mv ${TMPFILE}2 $TMPFILE
+	echo "Lib $lib, instance $name: Segmentation fault during processing -h"
+    fi
+    if egrep -q "^Unable to find images" $TMPFILE; then
+	echo "Lib $lib, instance $name: Error processing -h"
+	echo >$TMPFILE "Plugin $name does not support option '-h'."
+    else
+	# Remove empty starting lines
+	sed -e '1,/^./{
+/./!d
+}' $TMPFILE >${TMPFILE}2
+	mv ${TMPFILE}2 $TMPFILE
+    fi
+
+    # ASCII Output
+    cat >>$TXT << EOF
+----------------------------------------------------------------------
+$lib | $name
+----------------------------------------------------------------------
+
+EOF
+    cat $TMPFILE | sed -e "s/^-----/ ----/" >> $TXT
+    echo >>$TXT
+
+    # HTML Output
+    cat >>$HTML << EOF
+<h2>
+<a name="$name"> $lib  | $name</a> &nbsp; <a href="#top">top</a>
+</h2>
+<pre>
+EOF
+    cat $TMPFILE |sed -e 's/</\&lt;/g' >>$HTML
+    echo >>$HTML "</pre>"
+
+    rm -f $TMPFILE
+    i=$((i+1))
+done
+
+# #################### HTML Footer #####################
+cat >>$HTML << EOF
+</body>
+</html>
+EOF
+
+cp -f $TXT $HELP
+
+if test $? != 0; then
+    echo Generated \"$TXT\" and \"$HTML\" successfully,
+    echo but unable to write to \"$HELP\".
+else
+    echo Generated \"$TXT\", \"$HTML\", and \"$HELP\" successfully.
+fi

@@ -1,0 +1,88 @@
+#!/bin/sh
+
+# icewing-plugingen
+#
+# iceWing plugin template generator
+# (c) 1999-2006 by Frank Loemker
+#
+# Released under the GNU General Public License, version 2 or later.
+
+bindir="@BINDIR@"
+
+help()
+{
+    cat << EOF
+icewing-plugingen, (c) 1999-2006 by Frank Loemker
+
+Generate in the current directory an iceWing plugin template of name
+plugin-name, which contains function and type names starting with
+short-name (C-version).
+
+Usage: $0 [-c|-cxx|-cpp] plugin-name short-name
+-c          Generate a C plugin, the default if nothing is given.
+-cxx|-cpp   Generate a C++ plugin.
+EOF
+    exit 1
+}
+
+TMPL_SRC=`$bindir/icewing-config --datadir`/tmpl
+PRGLANG=c
+LINKER=gcc
+LONG=""
+SHORT=""
+
+while [ $# != 0 ]; do
+  case "$1" in
+    -c)
+	PRGLANG=c
+	LINKER=gcc
+	;;
+    -cxx|-cpp)
+        PRGLANG=cpp
+	LINKER=g++
+	;;
+    -*)
+	help
+	;;
+    *)
+        if test -z "$LONG"; then
+	    LONG=`echo $1 | tr -c -d '[[:alnum:]_]'`
+	else
+	    SHORT=`echo $1 | tr -c -d '[[:alnum:]_]'`
+	fi
+  esac
+  shift
+done
+if test -z "$LONG"; then
+    help
+fi
+if test -z "$SHORT"; then
+    SHORT=$LONG
+fi
+LONGlower=`echo $LONG |tr '[A-Z]' '[a-z]'`
+
+sed -e "s/TMPLlower/$LONGlower/g" \
+    -e "s/TMPL/$LONG/g" \
+    -e "s/tmpl/$SHORT/g" \
+    -e "s/LINKER/$LINKER/g" \
+    -e "s#BINDIR#$bindir#g" \
+    -e "s/LANG/$PRGLANG/g" $TMPL_SRC/Makefile >Makefile
+
+case "$PRGLANG" in
+    c)
+	sed -e "s/TMPLlower/$LONGlower/g" \
+	    -e "s/TMPL/$LONG/g" \
+	    -e "s/tmpl/$SHORT/g" $TMPL_SRC/TMPL.c >$LONGlower.c
+	;;
+    cpp)
+	sed -e "s/TMPLlower/$LONGlower/g" \
+	    -e "s/TMPL/$LONG/g" \
+	    -e "s/tmpl/$SHORT/g" $TMPL_SRC/TMPL.cpp >$LONGlower.cpp
+	sed -e "s/TMPLlower/$LONGlower/g" \
+	    -e "s/TMPL/$LONG/g" \
+	    -e "s/tmpl/$SHORT/g" $TMPL_SRC/TMPL.h >$LONGlower.h
+	;;
+esac
+
+make depend
+make

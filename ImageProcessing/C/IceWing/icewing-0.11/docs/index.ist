@@ -1,0 +1,8 @@
+% \index{Oestereich@\"{O}sterreich}
+quote         '#'
+delim_0        " \\dotfill "
+delim_1        " \\dotfill "
+delim_2        " \\dotfill "
+headings_flag  1
+heading_prefix "{\\bfseries "
+heading_suffix "\\hfill}\\nopagebreak\n"

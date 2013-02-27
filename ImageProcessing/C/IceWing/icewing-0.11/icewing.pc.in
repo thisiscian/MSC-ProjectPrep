@@ -1,0 +1,16 @@
+prefix=      @PREFIX@
+exec_prefix= @PREFIX@
+includedir=  @INCLUDEDIR@
+libdir=      @LIBDIR@
+datadir=     @DATADIR@
+pincludedir= @PINCLUDEDIR@
+HOME=             ~/.icewing
+libdir_home=      ${HOME}/plugins
+datadir_home=     ${HOME}/data
+pincludedir_home= ${HOME}/include
+
+Name:        iceWing
+Description: Graphical plugin shell
+Version:     @VERSION@
+Libs:        @libs@
+Cflags:      @cflags@

@@ -1,0 +1,22 @@
+#cmakedefine IW_DEBUG
+#cmakedefine WITH_FFMPEG
+#cmakedefine FFMPEG_LIBINC
+#cmakedefine WITH_JPEG
+#cmakedefine WITH_PNG
+#cmakedefine WITH_GPB
+#cmakedefine WITH_ARAVIS
+#cmakedefine WITH_FIRE
+#cmakedefine WITH_FIRE2
+#cmakedefine WITH_ICUBE
+#cmakedefine WITH_MVIMPACT
+#cmakedefine WITH_UEYE
+#cmakedefine WITH_UNICAP
+#cmakedefine WITH_LIBV4L
+#cmakedefine HAVE_MEMALIGN
+#cmakedefine HAVE_MMMALLOC
+#cmakedefine HAVE_UCHAR
+#cmakedefine HAVE_VSSCANF
+#cmakedefine HAVE_WORDEXP
+#define _ISOC9X_SOURCE
+#define DATADIR "@DATADIR@"
+#define LIBDIR  "@LIBDIR@"

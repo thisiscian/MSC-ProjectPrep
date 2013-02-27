@@ -1,0 +1,413 @@
+%--------------------------------------------------------------------------
+% Created by T.Birnthaler (FAU Erlangen-Nuernberg, IMMD5 (Mustererkennung))
+%--------------------------------------------------------------------------
+\message{Document Style Option `strukto' Version 2.0, as of 11. November 1989}
+%
+% Befehle zum Erzeugen von Struktogrammen:
+%
+% Erzeugung:
+%   \begin{struktogramm}{Breite}{Einrueckung}
+%     Anweisungen
+%   \end{struktogramm}
+%
+% Breite:
+%   bestimmt die vollstaendige Breite des Struktogramms
+%
+% Einrueckung:
+%   bestimmt die Einrueckungsbreite des Koerpers von Schleifenkonstrukten
+%   (der Balken neben IFx-Konstrukten wird halb so breit)
+%
+% Masse:             (Bedeutung:                               Defaultwert)
+%   \struktohskip    (horiz. Abstand aller Texte zu senkr. Linien:   0.5ex)
+%
+% Anweisungen:   (duerfen geschachtelt werden !)
+%   \IF[w,w,w]{Bedingung}THEN{Anweisung}ELSE{Anweisung}     (Standard:
+%   \IF*[w,w,w]{Bedingung}THEN{Anweisung}ELSE{Anweisung}     IF, THEN, ELSE)
+%
+%   \IFx{Bedingung}THEN{Anweisung}ELSE{Anweisung}
+%   \IFx*{Bedingung}THEN{Anweisung}ELSE{Anweisung}
+%
+%   \FOR[w]{Zaehler}DO{Anweisung}            (Standard: FOR)
+%   \WHILE[w]{Bedingung}DO{Anweisung}        (Standard: WHILE)
+%   \REPEAT[w]{Anweisung}UNTIL{Bedingung}    (Standard: UNTIL)
+%   \LOOP[w]{Anweisung}                      (Standard: LOOP)
+%
+%   \BLOCK{elementare Anweisung}
+%   \BLOCK*{elementare Anweisung}
+%
+% Bedingung, Zaehler, elementare Anweisung:
+%   beliebiger Text mit TeX-Kommandos zum Zeilenumbruch,
+%   Schriftartwechsel, ...
+%   (!!! aber keine Struktogrammanweisungen !!!).
+%
+% w = Schluesselwort:   (optionale(r) Parameter)
+%   ein kurzer Text wie z.B. FOR, F"UR, $\forall$, ..., ersetzt das
+%   jeweilige Standard-Schluesselwort (darf auch leer sein).
+%
+% Hinweise:
+%   -- elementare Anweisungen *muessen* in \BLOCK oder \BLOCK* eingeschachtelt
+%      werden, damit sie richtig eingerueckt werden koennen.
+%   -- Bei leerem ELSE-Anweisungsteil (...ELSE{}) wird der ELSE-Teil der
+%      IF-Anweisung nicht erzeugt (er *muss* aber trotzdem angegeben werden).
+%   -- Eine Linie nach dem Schluesselwoertern THEN und ELSE entsteht durch
+%      eine Struktogramm- oder \BLOCK-Anweisung, aber nicht durch \BLOCK*.
+%
+%   -- Bei der x-Version von IF wird links vom IF-Konstrukt eine schmale
+%      Spalte gezogen (halbe Einrueckbreite).
+%   -- Bei der *-Version von IF und IFx wird ein senkrechter Strich
+%      rechts vom Schluesselwoert IF auf der gleichen Hoehe wie beim
+%      THEN- und ELSE-Teil gezogen, und die IF-, THEN- und ELSE-Teile sind
+%      gleich breit.
+%   -- Bei der *-Version des BLOCK-Kommandos wird links davon keine
+%      Linie gezogen (nur in THEN- und ELSE-Teilen sinnvoll).
+%
+%   -- Leerzeichen ...
+%      ... am Anfang einer Zeile werden *nicht* beachtet.
+%      ... zwischen Argumenten werden *nicht* beachtet.
+%      ... in Argumenten werden beachtet.
+%
+%   -- Die Anzahl an Verschachtelungsstufen kann *nicht* beliebig weit 
+%      getrieben werden, da TeX irgendwann ueberlauft (die Grenze liegt
+%      etwa bei 6-7 Stufen).
+%-----------------------------------------------------------------------
+
+% interne Boxen
+\newbox\strukto@keyword@box
+\newbox\strukto@if@box
+\newbox\strukto@then@box
+\newbox\strukto@else@box
+\newbox\strukto@strut@box
+\newbox\strukto@box
+
+% Masse
+\newdimen\strukto@width
+\newdimen\strukto@indent
+\newdimen\struktohskip
+\newdimen\strut@height    % intern
+
+% Linien ohne Dicke
+\def\strukto@vrule{\vrule\hskip-0.4pt}
+\def\strukto@hrule{\hrule\vskip-0.4pt}
+
+% Standard-Leerraum um Schluesselworte (darf leer sein)
+\def\strukto@keyword#1{%
+  \hbox{\def\next{#1}%
+        \ifx\next\empty\else
+          \hskip\struktohskip\strut #1\hskip\struktohskip
+        \fi
+  }%
+}
+
+\newenvironment{struktogramm}[2]{%
+% -- begin of preamble ---
+  \bgroup
+%
+    \strukto@width=#1
+    \strukto@indent=#2
+%
+% wegen Beruecksichtigung der Schriftgroesse hier
+    \struktohskip=.5ex
+    \strut@height=\ht\strutbox
+%
+% Ausgleich fuer Hoehe 0 von \strukto@vrule
+    \advance\strut@height by 0.4pt
+    \setbox\strukto@strut@box=\hbox{\vrule height \strut@height depth \dp\strutbox width 0pt}%
+%
+% Kommandos nur lokal gueltig
+    \def\IF{\STRUKTO@IF}%
+    \def\IFx{\STRUKTO@IFx}%
+    \def\FOR{\STRUKTO@FOR}%
+    \def\WHILE{\STRUKTO@WHILE}%
+    \def\REPEAT{\STRUKTO@REPEAT}%
+    \def\LOOP{\STRUKTO@LOOP}%
+    \def\BLOCK{\STRUKTO@BLOCK}%
+%
+    \setbox\strukto@box\hbox to \strukto@width
+    \bgroup 
+      \@parboxrestore %Standardabsatz-Parameter einschalten
+      \vtop\bgroup
+        \strukto@hrule %oberer Rand
+}% --- end of preamble ---
+{% --- begin of postable ---
+      \egroup  %vbox beenden
+      \hskip-0.4pt\vrule
+    \egroup    %hbox beenden
+    \leavevmode
+    \box\strukto@box
+  \egroup
+}% --- end of postamble ---
+
+
+% Behandlung von Befehlsvarianten und optionalen Parametern
+\def\STRUKTO@IF{\@ifstar{\STRUKTO@@IF{}{l}}%
+                        {\STRUKTO@@IF{}{}}}
+\def\STRUKTO@IFx{\@ifstar{\STRUKTO@@IF{x}{l}}%
+                         {\STRUKTO@@IF{x}{}}}
+\def\STRUKTO@@IF#1#2{\@ifnextchar[{\STRUKTO@@@IF{#1}{#2}}%
+                                  {\STRUKTO@@@IF{#1}{#2}[IF,THEN,ELSE]}}
+
+\def\STRUKTO@FOR{\@ifnextchar[{\STRUKTO@GENERAL}%
+                              {\STRUKTO@GENERAL[FOR]}}
+\def\STRUKTO@WHILE{\@ifnextchar[{\STRUKTO@GENERAL}%
+                                {\STRUKTO@GENERAL[WHILE]}}
+
+\def\STRUKTO@LOOP{\@ifnextchar[{\STRUKTO@@LOOP}%
+                               {\STRUKTO@@LOOP[LOOP]}}
+\def\STRUKTO@@LOOP[#1]{\STRUKTO@GENERAL[#1]{}DO}
+
+\def\STRUKTO@REPEAT{\@ifnextchar[{\STRUKTO@@REPEAT}%
+                                 {\STRUKTO@@REPEAT[UNTIL]}}
+
+\def\STRUKTO@BLOCK{\@ifstar{\STRUKTO@@BLOCK{}}%
+                           {\STRUKTO@@BLOCK{l}}}
+
+
+% IF-THEN-ELSE-Konstrukt
+%
+% |#3 #6          
+% ----------------
+% |#4 #7        
+% ----------------
+% |#5 #8        
+% ----------------
+% x -> Schalter x: schmaler Balken links neben Konstrukt
+% * -> Schalter l: durchgehende Linie nach IF-Schluesselwort
+%
+% 1.Arg: switch x
+% 2.Arg: switch l
+% 3.Arg: IF-keyword
+% 4.Arg: THEN-keyword
+% 5.Arg: ELSE-keyword
+% 6.Arg: condition (text)
+% 7.Arg: then-part (struktogramm)
+% 8.Arg: else-part (struktogramm)
+%
+\long\def\STRUKTO@@@IF#1#2[#3,#4,#5]#6THEN#7ELSE#8{%
+%
+% Schluesselwortboxen erzeugen
+  \setbox\strukto@if@box=\strukto@keyword{#3}%
+  \setbox\strukto@then@box=\strukto@keyword{#4}%
+  \setbox\strukto@else@box=\strukto@keyword{#5}%
+%
+% laengste der drei Boxen bestimmen
+  \let\strukto@keyword@box=\strukto@if@box
+  \ifdim\wd\strukto@then@box > \wd\strukto@keyword@box
+    \let\strukto@keyword@box=\strukto@then@box
+  \fi
+  \ifdim\wd\strukto@else@box > \wd\strukto@keyword@box
+    \let\strukto@keyword@box=\strukto@else@box
+  \fi
+%
+  \vtop{%
+    \hsize=\strukto@width
+    \hbox to \strukto@width{%
+%
+      \def\test{#1}%
+      \if\test x% <-- IF-THEN-ELSE links mit Balken versehen ?
+        \strukto@vrule
+        \hskip.5 \strukto@indent
+        \strukto@vrule
+        \advance\strukto@width by -.5 \strukto@indent
+      \fi
+%
+% IF-Teil
+      \vtop{%
+        \hsize=\strukto@width
+% 
+        \hbox to \strukto@width{%
+          \strukto@vrule
+          \copy\strukto@if@box 
+          \def\test{#2}%
+          \if\test l% <-- IF-Teil wie THEN- u. ELSE-Teil einruecken ?
+            \hfill 
+            \strukto@vrule
+            \advance\strukto@width by -\wd\strukto@keyword@box
+          \else
+            \advance\strukto@width by -\wd\strukto@if@box
+          \fi
+          \hskip\struktohskip   % linke Texteinr.
+          \vtop{%
+            \hsize=\strukto@width
+            \advance\hsize by -\struktohskip    % linke Texteinr. beruecks.
+            \advance\hsize by -\struktohskip    % rechte Texteinr. beruecks.
+            \noindent\copy\strukto@strut@box #6\strut
+          }%
+          \hskip\struktohskip   % rechte Texteinr.
+        }%
+%
+% THEN-Teil
+        \nointerlineskip
+        \hrule
+        \nointerlineskip
+        \hbox to \strukto@width{%
+          \strukto@vrule   % linker Rand
+          \copy\strukto@then@box
+          \hfill 
+          \vtop{%
+            \def\test{#2}%
+            \if\test l% <-- THEN-Teil wie IF- u. ELSE-Teil einruecken ?
+              \advance\strukto@width by -\wd\strukto@keyword@box
+            \else
+              \advance\strukto@width by -\wd\strukto@then@box
+            \fi
+            \hsize=\strukto@width
+            #7%
+          }%
+        }%
+%
+% ELSE-Teil
+        \def\test{#8}%
+        \ifx\test\empty\else % <-- ELSE-Teil vorhanden ?
+          \nointerlineskip
+          \hrule
+          \nointerlineskip
+          \hbox to \strukto@width{%
+            \strukto@vrule   % linker Rand
+            \copy\strukto@else@box
+            \hfill
+            \vtop{%
+              \def\test{#2}%
+              \if\test l% <-- ELSE-Teil wie IF- u. THEN-Teil einruecken ?
+                \advance\strukto@width by -\wd\strukto@keyword@box
+              \else
+                \advance\strukto@width by -\wd\strukto@else@box
+              \fi
+              \hsize=\strukto@width
+              #8%
+            }%
+          }%
+        \fi
+      }%
+    }%
+    \strukto@hrule   % unterer Rand
+  }%
+  \nointerlineskip
+}
+
+
+% FOR-, WHILE-, LOOP-Konstrukt
+%
+% |#1  #2           
+%     --------------
+% |   | #3          
+% ------------------
+% 1.Arg: FOR-keyword
+% 2.Arg: condition (text)
+% 3.Arg: body      (struktogramm)
+%
+\long\def\STRUKTO@GENERAL[#1]#2DO#3{%
+  \vtop{%
+    \hsize=\strukto@width
+%
+% FOR-Teil
+    \hbox to \strukto@width{%
+      \strukto@vrule
+      \setbox\strukto@keyword@box=\strukto@keyword{#1}%
+      \copy\strukto@keyword@box
+      \hskip\struktohskip   % linke Texteinr.
+      \vtop{%
+        \hsize=\strukto@width
+        \advance\hsize by -\wd\strukto@keyword@box
+        \advance\hsize by -\struktohskip    % linke Texteinr. beruecks.
+        \advance\hsize by -\struktohskip    % rechte Texteinr. beruecks.
+        \noindent\copy\strukto@strut@box #2\strut
+      }%
+      \hskip\struktohskip   % rechte Texteinr.
+    }%
+    \nointerlineskip
+%
+% Koerper
+    \hbox to \strukto@width{%
+      \strukto@vrule   % linker Rand
+      \hskip\strukto@indent
+      \strukto@vrule   % linker Rand (eigentlich ueberfluessig)
+      \vtop{%
+        \advance\strukto@width by -\strukto@indent
+        \hsize=\strukto@width
+        \nointerlineskip
+        \hrule
+        #3%
+      }%
+    }%
+    \strukto@hrule   % unterer Rand
+  }%
+  \nointerlineskip
+}
+
+% REPEAT-UNTIL-Konstrukt
+%
+% |   | #2          
+%     --------------
+% |#1 #3            
+% ------------------
+% 1.Arg: UNTIL-keyword
+% 2.Arg: body      (struktogramm)
+% 3.Arg: condition (text)
+%
+\long\def\STRUKTO@@REPEAT[#1]#2UNTIL#3{%
+  \vtop{%
+    \hsize=\strukto@width
+%
+% Koerper
+    \hbox to \strukto@width{%
+      \strukto@vrule   % linker Rand
+      \hskip\strukto@indent
+      \strukto@vrule   % linker Rand (eigentlich ueberfluessig)
+      \vtop{%
+        \advance\strukto@width by -\strukto@indent
+        \hsize=\strukto@width
+        #2%
+        \hrule
+      }%
+    }%
+    \nointerlineskip
+%
+% UNTIL-Teil
+    \hbox to \strukto@width{%
+      \strukto@vrule
+      \setbox\strukto@keyword@box=\strukto@keyword{#1}%
+      \copy\strukto@keyword@box
+      \hskip\struktohskip   % linke Texteinr.
+      \vtop{%
+        \hsize=\strukto@width
+        \advance\hsize by -\wd\strukto@keyword@box
+        \advance\hsize by -\struktohskip    % linke Texteinr. beruecks.
+        \advance\hsize by -\struktohskip    % rechte Texteinr. beruecks.
+        \noindent\copy\strukto@strut@box #3\strut
+      }%
+      \hskip\struktohskip   % rechte Texteinr.
+    }%
+    \strukto@hrule   % unterer Rand
+  }%
+  \nointerlineskip
+}
+
+
+% | #2            
+% ----------------
+% * -> Schalter l: keine Linie links von Block
+%
+% 1.Arg: switch l
+% 2.Arg: body (text)
+%
+\long\def\STRUKTO@@BLOCK#1#2{%
+  \vtop{%
+    \hsize=\strukto@width
+    \hbox to \strukto@width{%
+      \def\test{#1}%
+      \if\test l% <-- linken Rand ziehen ?
+        \strukto@vrule
+      \fi
+      \hskip\struktohskip   % linke Texteinr.
+      \vtop{%
+        \hsize=\strukto@width
+        \advance\hsize by -\struktohskip    % linke Texteinr. beruecks.
+        \advance\hsize by -\struktohskip    % rechte Texteinr. beruecks.
+        \noindent\copy\strukto@strut@box #2\strut
+      }%
+      \hskip\struktohskip   % rechte Texteinr.
+    }%
+    \strukto@hrule   % unterer Rand
+  }%
+  \nointerlineskip
+}

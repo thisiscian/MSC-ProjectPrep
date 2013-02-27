@@ -1,0 +1,131 @@
+\documentclass[a4paper,12pt,twoside,headsepline,pointlessnumbers,idxtotoc,bibtotoc,BCOR0.6cm]{scrreprt}
+
+\usepackage{ifpdf}
+
+\ifpdf
+
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usepackage{epstopdf}
+\usepackage[pdftex,plainpages=false,pdfpagelabels]{hyperref}
+\hypersetup{
+  a4paper,
+  colorlinks,citecolor=blue,
+  pdfauthor={Frank Loemker, Andreas Huewel},
+  pdfsubject={iceWing documentation},
+  pdftitle={iceWing: User and Programming Guide},
+  pdfkeywords={}
+}
+\newfont{\titelfont}{cmssbx10 scaled 4500}
+\newfont{\titelsmall}{cmss10 scaled 2000}
+
+\else
+
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage[hypertex]{hyperref}
+\newfont{\titelfont}{ecsx1000 scaled 4500}
+\newfont{\titelsmall}{ecss1000 scaled 2000}
+
+\fi
+
+\usepackage{indentfirst}
+%\usepackage{makeidx,showidx} \makeindex
+\usepackage{makeidx} \makeindex
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{fancybox}
+\usepackage{strukto}
+
+%\usepackage{german}
+%\selectlanguage{english}
+
+\graphicspath{ {images/}}
+
+\makeatletter
+\newcommand*{\pagereftop}[1]{%
+  \expandafter\@pagesetref\csname r@#1\endcsname\@empty{#1}%
+}
+\makeatother
+
+\sloppy
+\hyphenation{
+  iceWing
+  com-po-site
+  uni-cap
+}
+\newcommand{\icewing}{\textsf{iceWing}}
+\newcommand{\dacs}{\textsf{DACS}}
+\newcommand{\matlab}{{\sc Matlab}}
+\newcommand{\urltilde}{\lower .7ex\hbox{\~{}}}
+
+\newcommand{\shellcom}[1]{\hspace*{4ex} {\tt > #1}\\}
+\newcommand{\sS}{\\[1.5ex]}
+\newcommand{\sE}{\\[-1.5ex]}
+
+\newcommand{\Index}[1]{#1\index{#1}}
+\newcommand{\fktIndex}[1]{{\tt #1}\index{#1@{\tt #1}}}
+\newcommand{\typeIndex}[1]{{\tt #1}\index{#1@{\tt #1}}}
+\newcommand{\varIndex}[1]{{\tt #1}\index{#1@{\tt #1}}}
+
+\newcommand{\fktindex}[1]{\index{#1@{\tt#1}}}
+\newcommand{\typeindex}[1]{\index{#1@{\tt #1}}}
+\newcommand{\varindex}[1]{\index{#1@{\tt #1}}}
+
+\newcommand{\idxmain}[1]{\emph{\hyperpage{#1}}}
+
+\newcommand{\fkt}[1]{{\tt #1}}
+\newcommand{\type}[1]{{\tt #1}}
+\newcommand{\var}[1]{{\tt #1}}
+
+\begin{document}
+
+\title{\icewing\\User and Programming Guide}
+\author{Program: Frank L\"omker\\
+  Documentation: Frank L\"omker, Andreas H\"uwel}
+
+%\maketitle
+\begin{titlepage}
+  \begin{center}
+    \sf
+    \includegraphics[width=14.5cm]{images/iw_titel}
+    %3D Outline  Pink Marble  iceWing  300
+    %             FritzQuadrata Bold
+    %             10  10  10
+    %             Default  2  2
+    % Colorize  240  45  58
+
+    \rule{\textwidth}{1pt}\vspace{-0.2cm}
+    {\titelfont\baselineskip54pt%
+      User and\\
+      Programming Guide\par}\vspace{0.2cm}
+
+    \rule{\textwidth}{1pt}
+    \vspace*{1cm}
+
+    {\titelsmall\baselineskip24pt Version 0.11\\ \today{}\par}
+  \end{center}
+\end{titlepage}
+\cleardoublepage
+
+\pagenumbering{roman}
+\tableofcontents
+\cleardoublepage
+
+\pagenumbering{arabic}
+
+\include{tex/install}
+\include{tex/userguide}
+\include{tex/prgguide}
+
+\bibliographystyle{alpha}
+\bibliography{literatur}
+
+\printindex
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% fill-column: 68
+%%% End: 

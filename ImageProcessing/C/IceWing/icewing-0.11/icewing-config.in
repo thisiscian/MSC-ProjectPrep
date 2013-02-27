@@ -1,0 +1,94 @@
+#!/bin/sh
+
+#
+# icewing-config
+#
+# Tool for retrieving system specific settings and paths for iceWing
+# (c) 1999-2006 by Frank Loemker
+#
+# Released under the GNU General Public License, version 2 or later.
+
+prefix="@PREFIX@"
+bindir="${prefix}/bin"
+cflags="@cflags@"
+libs="@libs@"
+libdir="@LIBDIR@"
+datadir="@DATADIR@"
+pincludedir="@PINCLUDEDIR@"
+version="@VERSION@"
+HOME=~/.icewing
+
+usage()
+{
+    cat <<EOF
+Usage: icewing-config [OPTIONS]
+Options:
+    [--prefix]
+    [--bindir]
+    [--libs]
+    [--cflags]
+    [--home=HOME]
+    [--libdir]
+    [--datadir]
+    [--pincludedir]
+    [--version]
+
+The options --libdir, --datadir, and --pincludedir can be appended
+with "-home" (e.g. --libdir-home) to get the path to the "~/.icewing/"
+subdirs. Using the "--home=" option the "~/.icewing/"-prefix can be
+changed.
+EOF
+    exit 1
+}
+
+if test $# -eq 0; then
+    usage
+fi
+
+while test $# -gt 0; do
+  case $1 in
+    --home=*)
+      HOME=`echo "$1" | sed 's/[-a-z]*=//'`
+      ;; 
+    --prefix)
+      echo $prefix
+      ;;
+    --bindir)
+      echo $bindir
+      ;;
+    --version)
+      echo $version
+      ;;
+    --cflags)
+      # if test ${prefix}/include != /usr/include -a ${prefix}/include != /usr/local/include; then
+      #   includes=-I${prefix}/include
+      # fi
+      echo $includes $cflags
+      ;;
+    --libs)
+      echo $libs
+      ;;
+    --libdir-home)
+      echo ${HOME}/plugins
+      ;;
+    --libdir)
+      echo $libdir
+      ;;
+    --datadir-home)
+      echo ${HOME}/data
+      ;;
+    --datadir)
+      echo $datadir
+      ;;
+    --pincludedir-home)
+      echo ${HOME}/include
+      ;;
+    --pincludedir)
+      echo $pincludedir
+      ;;
+    *)
+      usage
+      ;;
+  esac
+  shift
+done

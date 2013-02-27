@@ -1,0 +1,14 @@
+CMake, available from http://www.cmake.org/, is a utility to configure
+a software package and generate build files for it. Version 2.4 or
+newer of cmake can be used to build iceWing. 
+
+Start CMake by "cmake .." from within this directory. CMake will then
+create the necessary build files in this directory to compile iceWing
+and install it to "/usr/local". Start the build process by "make" (or
+"make VERBOSE=1" for a more verbose output) and the installation by
+"make install".
+
+To install iceWing to a different location, use
+"cmake -DCMAKE_INSTALL_PREFIX=PATH_WHERE_ICEWING_SHOULD_BE_INSTALLED .."
+For further installation instructions and general documentation please
+refer to the file docs/icewing.pdf.

@@ -1,0 +1,34 @@
+Some possible changes/enhancements for iceWing
+----------------------------------------------
+
+- Enhanced plugin info window:
+    - Continous update
+    - Graphical plugin graph
+    - Possibility to display stored data elements
+- Callbacks for all widgets
+- Enhanced image rendering:
+    - Support HSI/LUV/LAB
+    - Render in the complete window, including right/bottom border.
+- 3D-Support for rendering
+- UTF-8 / freetype support for text rendering
+- Enhanced preview windows:
+    - Optional status bar with cursor info and zoom/pan buttons
+    - Docking of multiple windows
+    - Syncronized panning / multiple views on one window
+    - Enhaced panning/zooming: Cursors
+                               Zoom by marking a rectangle
+- JPEG2000 load support
+- Save as EPS
+- Start/End image: Restrict image range for the "Image Num" slider
+- Color selector widget
+- Text widget
+- GUI for the camera drivers for changing properties/pixel formats
+- Allow all widgets/menu entries to be remote controllable (e.g. "Save Seq")
+- Enhanced GTK 2.x support
+- CMake-support for plugins?
+
+- Docu enhancements:
+  - Tips:
+      mencoder mf://*.jpg -mf fps=25:type=jpg -ovc lavc -lavcopts vcodec=mpeg4 -oac copy -o video.mpg 
+      transcode --use_rgb -x imlist,null -g 384x288 -i list -y divx4,null -o test.avi
+      montage -depth 8 -geometry 384x288+0+0 i1.png i2.png o.png
