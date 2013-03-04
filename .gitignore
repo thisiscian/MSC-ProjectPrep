@@ -1,0 +1,11 @@
+*.pgm
+*.png
+cyclic
+block1d
+rectangularvoronoi
+voronoi
+squareaboutpoi
+*.aux
+*.log
+*.out
+
