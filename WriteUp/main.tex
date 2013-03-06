@@ -1,7 +1,9 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{assignmentCian}
+\usepackage{gantt}
 \author{Cian Booth}
-\graphicspath{{figures/data/},{figures/}}
+\graphicspath{{img/}}
+
 \title{Project Preparation Report\\ Where's Wally?}
 
 \begin{document}
@@ -13,7 +15,9 @@
   \pagebreak
   \tableofcontents
   \pagebreak
-  \input{introduction.tex}
-  \input{previous_dissertations.tex}
+  \subfile{tex/introduction.tex}
+  \subfile{tex/previous_dissertations.tex}
+  \subfile{tex/work_plan.tex}
+  \subfile{tex/risk_analysis.tex}
 
 \end{document}

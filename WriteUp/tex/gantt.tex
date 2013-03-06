@@ -1,0 +1,30 @@
+\documentclass[main.tex]{subfiles} 
+\begin{document}
+  \scalebox{0.8}{
+  \begin{gantt}[xunitlength=0.5cm,fontsize=\small,titlefontsize=\small,drawledgerline=true]{15}{88}
+    \begin{ganttitle}
+      \titleelement{June}{28}
+      \titleelement{July}{31}
+      \titleelement{August}{29}
+    \end{ganttitle}
+    \begin{ganttitle}
+      \numtitle{3}{1}{30}{1}
+      \numtitle{1}{1}{31}{1}
+      \numtitle{1}{1}{29}{1}
+    \end{ganttitle}
+    \ganttgroup{Linear Stage}{0}{30}
+    \ganttbar[color=blue]{Design Linear Where's Wally Solver}{0}{5}
+    \ganttbarcon[color=green]{Create Testing Suite for Solver}{5}{7}
+    \ganttbarcon[color=red]{Implement Linear Where's Wally Solver}{12}{18}
+    \ganttgroup{Parallel Stage}{30}{40}
+    \ganttbar[color=blue, pattern=crosshatch]{Design Parallel WW Solver}{30}{5}
+    \ganttbarcon[color=green, pattern=crosshatch]{Design Parallel Testing Suite}{35}{5}
+    \ganttbarcon[color=red, pattern=crosshatch]{Implement Parallel WW Solver}{40}{20}
+    \ganttbarcon[color=gray, pattern=crosshatch]{Optimise Solver}{60}{10}
+    \ganttbar[color=darkgray]{Start Writing Report/Presentation}{5}{49}
+    \ganttbarcon{Concentrate on Writing Report/Presentation}{54}{28}
+    \ganttmilestonecon{Dissertation Submission Date}{82}
+    \ganttbarcon{Dissertation Presentations}{82}{6}
+    \end{gantt}
+  }
+\end{document}

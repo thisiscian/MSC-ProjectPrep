@@ -1,15 +1,23 @@
 PDF=pdflatex
 BIB=bibtex
-input=main
-output=ProjectPrep-CianBooth-Report
+INPUT=main
+OUTPUT=ProjectPrep-CianBooth-Report
+SUBFOLDER=tex
+SUBFILES=$(patsubst $(SUBFOLDER)/%.tex,%,$(wildcard $(SUBFOLDER)/*.tex))
 
 main:
-	$(PDF) -jobname $(output) $(input)
+	$(PDF) -jobname $(OUTPUT) $(INPUT)
+
+
+%: $(SUBFOLDER)/%.tex
+	cd $(SUBFOLDER) && $(PDF) $@
+
+subfiles: $(SUBFILES)
 
 bibtex:
-	$(PDF) -jobname $(output) $(input)
-	$(BIB) $(output)
-	$(PDF) -jobname $(output) $(input) 
+	$(PDF) -jobname $(OUTPUT) $(INPUT)
+	$(BIB) $(OUTPUT)
+	$(PDF) -jobname $(OUTPUT) $(INPUT) 
 	
 clean:
-	@rm $(output).{pdf,aux,log,blg,bbl}
+	@rm $(OUTPUT).{pdf,aux,log,blg,bbl}
