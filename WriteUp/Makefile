@@ -2,15 +2,19 @@ PDF=pdflatex
 BIB=bibtex
 INPUT=main
 OUTPUT=ProjectPrep-CianBooth-Report
+OUTDIR=pdf
 SUBFOLDER=tex
 SUBFILES=$(patsubst $(SUBFOLDER)/%.tex,%,$(wildcard $(SUBFOLDER)/*.tex))
 
 main:
-	$(PDF) -jobname $(OUTPUT) $(INPUT)
+	export TEXINPUTS=.:./tex/:..: && \
+	$(PDF) --output-directory $(OUTDIR) -jobname $(OUTPUT) $(INPUT)
 
 
 %: $(SUBFOLDER)/%.tex
-	cd $(SUBFOLDER) && $(PDF) $@
+	export TEXINPUTS=.:./tex/:..: && \
+  cd $(SUBFOLDER) && \
+  $(PDF) --output-directory ../$(OUTDIR) $@
 
 subfiles: $(SUBFILES)
 
