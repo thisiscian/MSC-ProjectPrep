@@ -1,5 +1,46 @@
 \documentclass[main.tex]{subfiles} 
 \begin{document}
   \section{Work Plan}
-  \subfile{gantt}
+    As with most projects, there is a set time that I must complete the code and report within.
+    According to the MSc. Programme Handbook\cite{url:msc-handbook}, the start of the dissertation period is on the 3rd of June 2013.
+    The dissertation must be submitted by the 23rd of August 2013.
+    This gives me 88 days to produce my project.
+
+    My project, as presumably do many other \emph{`from scratch'} HPC projects, has two main regions areas of development: the linear code and the parallel code.
+    As such it makes sense to divide my time into two regions, linear and parallel.
+    This division is somewhat coarse, however, so each region will be divided into three new sections.
+
+    The first will be \emph{Design}, wherein I will be deciding the overall format of the code.
+    This will include, what programming language, libraries, functions and the actual method of solving Where's Wally.
+    The next section will be \emph{Creating Tests}, where I will design the tests to ensure functionality of the solution.
+    The final section will be \emph{Implementing the Solver}.
+    This will be the actual production of code that satisfies the tests I have already created.
+
+    If there is any spare time at the end of the project, a fourth section will be used; \emph{Optimisation and Outreach}.
+    This will be simply improving the speed of the solution I have developed.
+    If the program can solve Where's Wally problems at a near human level, then I will work on improving the output of the program.
+    The end goal at this point, would be to produce something that could be used for HPC Outreach.
+  \subsection{Breakdown}
+    The breakdown of my work plan follows.
+    Each section has built in time for weekends, plus some stretch for running overtime.
+    \begin{description}
+      \item[Linear (\textasciitilde30 days)]\hfill
+        \begin{description}
+          \item[Design (4 days)] As I am familiar with the problems of a Where's Wally solver, it is hoped that 4 days would be enough to design a solution.
+          \item[Create Tests (6 days)] My problem lends itself to a relatively simple program, so testing shouldn't take more than a week.
+          \item[Implement Solver (14 days)] A basic Where's Wally solver should be creatable within 2 weeks.
+        \end{description}
+      \item[Parallel (\textasciitilde40 days)]\hfill\\
+        \begin{description}
+          \item[Design (4 days)] Although a program utilising parallel methods is more complicated than a linear one, I hope to expand on the linear solution.
+            Thus I have assigned the same amount of time as the linear design section.
+          \item[Create Tests (6 days)] Again, I hope to reuse most of the tests from the linear section, so creating tests for the parallel version should take the same amount of time.
+          \item[Implement Solver (21 days)] 
+        \end{description}
+    \end{description}
+    The remaining 12 days will be entirely devoted to writing the dissertation report and presentation, however, it is intended that I will be updating these as I progress.
+    This breakdown is visualised in Figure \ref{gantt-chart}, a Gantt chart.
+    
+    \subfile{gantt}
+    \biblio
 \end{document}

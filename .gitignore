@@ -10,3 +10,5 @@ squareaboutpoi
 *.out
 *.toc
 *.swp
+*.bbl
+*.blg

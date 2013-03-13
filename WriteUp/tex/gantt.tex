@@ -1,30 +1,37 @@
 \documentclass[main.tex]{subfiles} 
 \begin{document}
-  \scalebox{0.8}{
-  \begin{gantt}[xunitlength=0.5cm,fontsize=\small,titlefontsize=\small,drawledgerline=true]{15}{88}
+  \begin{landscape}
+  \begin{figure}
+  \centering
+  \scalebox{0.6}{
+  \begin{gantt}[xunitlength=0.4cm,fontsize=\small,titlefontsize=\small,drawledgerline=true]{15}{88}
     \begin{ganttitle}
       \titleelement{June}{28}
       \titleelement{July}{31}
       \titleelement{August}{29}
     \end{ganttitle}
     \begin{ganttitle}
-      \numtitle{3}{1}{30}{1}
-      \numtitle{1}{1}{31}{1}
-      \numtitle{1}{1}{29}{1}
+      \numtitle{1}{1}{12}{7}
+      \numtitle{13}{1}{13}{4}
     \end{ganttitle}
     \ganttgroup{Linear Stage}{0}{30}
-    \ganttbar[color=blue]{Design Linear Where's Wally Solver}{0}{5}
-    \ganttbarcon[color=green]{Create Testing Suite for Solver}{5}{7}
-    \ganttbarcon[color=red]{Implement Linear Where's Wally Solver}{12}{18}
+    \ganttbar[color=blue, pattern=north east lines]{Linear: Design}{0}{4}
+    \ganttbarcon[color=green, pattern=north east lines]{Linear: Creating Tests}{5}{6}
+    \ganttbarcon[color=red, pattern=north east lines]{Linear: Implementing}{12}{14}
+    \ganttbarcon[color=brown, pattern=north east lines]{Linear: Optimisation}{63}{7}
+    \ganttcon{26}{5}{30}{8}
     \ganttgroup{Parallel Stage}{30}{40}
-    \ganttbar[color=blue, pattern=crosshatch]{Design Parallel WW Solver}{30}{5}
-    \ganttbarcon[color=green, pattern=crosshatch]{Design Parallel Testing Suite}{35}{5}
-    \ganttbarcon[color=red, pattern=crosshatch]{Implement Parallel WW Solver}{40}{20}
-    \ganttbarcon[color=gray, pattern=crosshatch]{Optimise Solver}{60}{10}
-    \ganttbar[color=darkgray]{Start Writing Report/Presentation}{5}{49}
-    \ganttbarcon{Concentrate on Writing Report/Presentation}{54}{28}
-    \ganttmilestonecon{Dissertation Submission Date}{82}
-    \ganttbarcon{Dissertation Presentations}{82}{6}
+    \ganttbar[color=blue, pattern=crosshatch]{Parallel: Design}{30}{4}
+    \ganttbarcon[color=green, pattern=crosshatch]{Parallel: Creating Tests}{35}{6}
+    \ganttbarcon[color=red, pattern=crosshatch]{Parallel: Implementing}{42}{21}
+    \ganttbarcon[color=brown, pattern=crosshatch]{Parallel: Optimisation and HPC Outreach}{63}{7}
+    \ganttbar[color=lime, pattern=north west lines]{Write Report/Presentation}{5}{77}
+    \ganttmilestone{Dissertation Submission Date}{82}
+    \ganttbar{Dissertation Presentations}{86}{2}
     \end{gantt}
   }
+  \caption{A Gantt Chart of how time will be divided between areas of work}
+  \label{gantt-chart}
+  \end{figure}
+  \end{landscape}
 \end{document}

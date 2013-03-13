@@ -1,13 +1,18 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{assignmentCian}
 \usepackage{gantt}
+\usepackage{pdflscape}
 \author{Cian Booth}
 \graphicspath{{img/}}
 
 \title{Project Preparation Report\\ Where's Wally?}
-
+\def\biblio
+{
+  \bibliographystyle{plain}
+  \bibliography{project}
+}
 \begin{document}
-
+\def\biblio{}
 	\maketitle
   \begin{center}
     \includegraphics{wally}
@@ -15,9 +20,10 @@
   \pagebreak
   \tableofcontents
   \pagebreak
-  \subfile{tex/introduction.tex}
-  \subfile{tex/previous_dissertations.tex}
-  \subfile{tex/work_plan.tex}
-  \subfile{tex/risk_analysis.tex}
-
+  \subfile{introduction}
+  \subfile{previous_dissertations}
+  \subfile{work_plan}
+  \subfile{risk_analysis}
+  \bibliographystyle{plain}
+  \bibliography{project}
 \end{document}
