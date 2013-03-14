@@ -42,12 +42,20 @@ int main()
 		{
 			for(int k=y_min; k<y_max; k++)
 			{
-				image[j][k]++;
-				if(image[j][k] > max)
+				image[j][k]--;
+				if(image[j][k] < max)
 				{
 					max = image[j][k];
 				}
 			}
+		}
+	}
+
+ 	for(int i=0; i<200; i++)
+	{
+		for(int j=0; j<200; j++)
+		{
+			image[i][j] -= max;
 		}
 	}
 

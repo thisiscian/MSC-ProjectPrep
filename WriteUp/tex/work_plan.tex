@@ -1,46 +1,69 @@
 \documentclass[main.tex]{subfiles} 
 \begin{document}
   \section{Work Plan}
-    As with most projects, there is a set time that I must complete the code and report within.
     According to the MSc. Programme Handbook\cite{url:msc-handbook}, the start of the dissertation period is on the 3rd of June 2013.
     The dissertation must be submitted by the 23rd of August 2013.
-    This gives me 88 days to produce my project.
+    This means that there are 88 days to start and complete the project.
 
-    My project, as presumably do many other \emph{`from scratch'} HPC projects, has two main regions areas of development: the linear code and the parallel code.
-    As such it makes sense to divide my time into two regions, linear and parallel.
+    This project has two main strands of development: the linear code and the parallel code.
     This division is somewhat coarse, however, so each region will be divided into three new sections.
 
-    The first will be \emph{Design}, wherein I will be deciding the overall format of the code.
-    This will include, what programming language, libraries, functions and the actual method of solving Where's Wally.
-    The next section will be \emph{Creating Tests}, where I will design the tests to ensure functionality of the solution.
-    The final section will be \emph{Implementing the Solver}.
-    This will be the actual production of code that satisfies the tests I have already created.
-
-    If there is any spare time at the end of the project, a fourth section will be used; \emph{Optimisation and Outreach}.
-    This will be simply improving the speed of the solution I have developed.
-    If the program can solve Where's Wally problems at a near human level, then I will work on improving the output of the program.
-    The end goal at this point, would be to produce something that could be used for HPC Outreach.
-  \subsection{Breakdown}
-    The breakdown of my work plan follows.
-    Each section has built in time for weekends, plus some stretch for running overtime.
+    The work plan is broken down below.
+    Note that each section has built in time for weekends, plus some stretch for running overtime.
+    Furthermore, the text inside the square brackets (e.g. [L1]) indicates the path on the Gantt chart.
+    This can be found in the appendix.
     \begin{description}
       \item[Linear (\textasciitilde30 days)]\hfill
         \begin{description}
-          \item[Design (4 days)] As I am familiar with the problems of a Where's Wally solver, it is hoped that 4 days would be enough to design a solution.
-          \item[Create Tests (6 days)] My problem lends itself to a relatively simple program, so testing shouldn't take more than a week.
-          \item[Implement Solver (14 days)] A basic Where's Wally solver should be creatable within 2 weeks.
+          \item[Designing {[L1]} (4 days)]
+            This will consist of deciding the format of the linear code.
+            This includes choosing a programming language and library to use.
+            Basic function concepts will also be developed here.
+            It is hoped that 4 days would be enough to design this solution.
+          \item[Testing {[L2]} (6 days)]
+            This project will be test driven.
+            As such, creating tests comes before any implementation stages.
+            This time will be spent devising and implementing tests to ensure that the program works correctly.
+            The problem is conceptually simple and it is hoped that the tests will reflect this.
+            Six days have been assigned to creating the tests.
+          \item[Implementation {[L3]} (14 days)]
+            Working from the basis of the tests, code will be written that satisfies the tests.
+            Once this has happened, a working solution for the Where's Wally puzzle will have been created.
+            Fourteen working days have been given to implementing the solution.
+          \item[Optimisation {[L4]} (any remaining time)]
+            If the linear and parallel programs have both been produced, then spare time will be used optimising both solvers.
+            This is important, as it is the main way to benchmark any speed-up that the parallel code exhibits.
+            Optimising the linear program will likely involve reducing memory access, and so time will be focused on this.
         \end{description}
-      \item[Parallel (\textasciitilde40 days)]\hfill\\
+      \item[Parallel (\textasciitilde40 days)]\hfill
         \begin{description}
-          \item[Design (4 days)] Although a program utilising parallel methods is more complicated than a linear one, I hope to expand on the linear solution.
-            Thus I have assigned the same amount of time as the linear design section.
-          \item[Create Tests (6 days)] Again, I hope to reuse most of the tests from the linear section, so creating tests for the parallel version should take the same amount of time.
-          \item[Implement Solver (21 days)] 
+          \item[Designing {[P1]} (4 days)]
+            Although a program utilising parallel methods is more complicated than a linear one, this project intends to expand on the linear solution.
+            This means that functions from the linear program will be analysed for potential parallelism.
+            Four days have been put aside for this stage.
+          \item[Testing {[P2]} (6 days)]
+            Here, new tests will have to be written to ensure that the parallelised functions designed above work correctly.
+            The old tests should hold true however, so only a small amount of testing needs to be done.
+            Creating specific tests for the parallel version should 6 days.
+          \item[Implementation {[P3]} (21 days)] 
+            The implementation of the parallel program consists of satisfying the tests laid out during the testing period.
+            It is intended that this will mostly be through the modification of existing code.
+            As parallel programming is more difficult than linear program, implementing a parallel solution has been given 3 weeks.
+          \item[Optimisation {[P4]} (any remaining time)]
+            Again, any time remaining at the end of the project will be devoted to optimising the solver.
+            The goal is to have the parallel run as fast, if not faster, than a human solving the same puzzle.
+        \end{description}
+      \item[Dissertation Report (ongoing)]\hfill
+        \begin{description}
+          \item[Writing Report {[D1]} (ongoing)]
+            The writing of the report can be begin as soon as any amount of design has been done.
+            The report will be updated as work continues, ensuring that the report is never a large workload.
+            This has the added benefit of allowing more time for editing and correction.
+            During this time, the project presentation will also be written.
+          \item[Present Dissertation {[D2]} (2 days)]
+            Over two days, the dissertation presentations will be held.
+            Time between the submission date and the presentation of this report will be spent practising the presentation.
         \end{description}
     \end{description}
-    The remaining 12 days will be entirely devoted to writing the dissertation report and presentation, however, it is intended that I will be updating these as I progress.
-    This breakdown is visualised in Figure \ref{gantt-chart}, a Gantt chart.
-    
-    \subfile{gantt}
     \biblio
 \end{document}

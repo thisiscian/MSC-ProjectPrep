@@ -4,7 +4,7 @@
   \begin{figure}
   \centering
   \scalebox{0.6}{
-  \begin{gantt}[xunitlength=0.4cm,fontsize=\small,titlefontsize=\small,drawledgerline=true]{15}{88}
+  \begin{gantt}[xunitlength=0.4cm,fontsize=\small,titlefontsize=\small]{15}{88}
     \begin{ganttitle}
       \titleelement{June}{28}
       \titleelement{July}{31}
@@ -15,19 +15,19 @@
       \numtitle{13}{1}{13}{4}
     \end{ganttitle}
     \ganttgroup{Linear Stage}{0}{30}
-    \ganttbar[color=blue, pattern=north east lines]{Linear: Design}{0}{4}
-    \ganttbarcon[color=green, pattern=north east lines]{Linear: Creating Tests}{5}{6}
-    \ganttbarcon[color=red, pattern=north east lines]{Linear: Implementing}{12}{14}
-    \ganttbarcon[color=brown, pattern=north east lines]{Linear: Optimisation}{63}{7}
+    \ganttbar[color=blue, pattern=north east lines]{Linear: Designing [L1]}{0}{4}
+    \ganttbarcon[color=green, pattern=north east lines]{Linear: Testing [L2]}{5}{6}
+    \ganttbarcon[color=red, pattern=north east lines]{Linear: Implementation [L3]}{12}{14}
+    \ganttbarcon[color=brown, pattern=north east lines]{Linear: Optimisation [L4]}{63}{7}
     \ganttcon{26}{5}{30}{8}
     \ganttgroup{Parallel Stage}{30}{40}
-    \ganttbar[color=blue, pattern=crosshatch]{Parallel: Design}{30}{4}
-    \ganttbarcon[color=green, pattern=crosshatch]{Parallel: Creating Tests}{35}{6}
-    \ganttbarcon[color=red, pattern=crosshatch]{Parallel: Implementing}{42}{21}
-    \ganttbarcon[color=brown, pattern=crosshatch]{Parallel: Optimisation and HPC Outreach}{63}{7}
-    \ganttbar[color=lime, pattern=north west lines]{Write Report/Presentation}{5}{77}
+    \ganttbar[color=blue, pattern=crosshatch]{Parallel: Designing [P1]}{30}{4}
+    \ganttbarcon[color=green, pattern=crosshatch]{Parallel: Testing [P2]}{35}{6}
+    \ganttbarcon[color=red, pattern=crosshatch]{Parallel: Implementation [P3]}{42}{21}
+    \ganttbarcon[color=brown, pattern=crosshatch]{Parallel: Optimisation [P4]}{63}{7}
+    \ganttbar[color=lime, pattern=north west lines]{Writing Report [D1]}{5}{77}
     \ganttmilestone{Dissertation Submission Date}{82}
-    \ganttbar{Dissertation Presentations}{86}{2}
+    \ganttbar{Present Dissertation [D2]}{86}{2}
     \end{gantt}
   }
   \caption{A Gantt Chart of how time will be divided between areas of work}

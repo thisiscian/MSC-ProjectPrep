@@ -1,41 +1,36 @@
 \documentclass[../main.tex]{subfiles} 
 \begin{document}
   \section{Previous Dissertation Reviews}
-    When reading previous dissertations, I tried to read a range of papers, to maximise their benefit to me.
-    Firstly, I chose to read a paper that was strongly related to my own, \emph{`High Performance Computer Vision'} by Benjamin Eagan.
-    This paper has the same topic,  Computer Vision, as my own.
-    As such, I could learn a good amount about any hints or difficulties found with Computer Vision in the high performance domain.
-    My next choice was \emph{`Parallelization and Optimization of a Tax and Benefits Model'} by Thomas McClintock. 
-    This has almost no relation to Where's Wally, being a simulation of how taxes affect various groups of people.
-    Thus, I could learn from this the general things that I should note in order to complete this project efficiently.
-    However, my previous two papers were both on the list of dissertations which achieved a distinction.
-    I therefore chose to read another paper, \emph{`Novel energy efficient compute architectures on the path to Exascale'} by Ioan Corneliu Hadade.
-    From this paper, I could compare the differences between a paper that achieves a distinction, and one that achieves something between that and a pass.
-    Hopefully I could extract that which makes the difference, and then attempt to do the same.
+    When reading previous dissertations, an effort was made to read a range of papers to maximise their benefit.
+    The first paper was strongly related to this project, \emph{`High Performance Computer Vision'} by Benjamin Eagan\cite{prevdis:hpcv}.
+    This paper could potentially be a good way to learn about any hints or difficulties found within the topic of Computer Vision.
+    The second paper was \emph{`Parallelization and Optimization of a Tax and Benefits Model'} by Thomas McClintock\cite{prevdis:tax}. 
+    This has no direct relation to Where's Wally, being a simulation of how taxes affect various groups of people.
+    Thus, this paper could reveal general things that I should note in order to complete this project efficiently.
+    These two papers were both on the list of dissertations which achieved a distinction.
+    Therefore, a third paper was reviewed; \emph{`Novel energy efficient compute architectures on the path to Exascale'} by Ioan Corneliu Hadade\cite{prevdis:exascale}.
+    With this paper, differences between two standards of paper could be recognised.
+    Acknowledging these differences would allow improvement of the final project report.
   \subsection{High Performance Computer Vision}
     Eagan's paper mostly deals with two topics; object tracking in real time videos, and disparity mapping.
     The first is useful for having more natural human-computer interactions.
     The second is for allowing computers to map 3D areas from 2D images.
-    These are not the areas of computer vision that I will be concerning myself with, but are still in the general domain.
+    Although these are not the areas of computer vision that concern this project, it is still within the same branch of computer science.
     
-    The good qualities of the paper were apparent, presumably leading to the distinction grade it received.
-    The quality of English throughout the paper was entirely understandable.
-    The figures included were engaging, and generally it was easy to grasp what they were showing.
+    The high quality of this paper was apparent throughout.
+    The efficient use of English language made sure that the paper was continually understandable.
+    The figures included were engaging, allowing prompt understanding of the message being conveyed.
     The nature of the project that Eagan had chosen also strongly highlighted the importance of Risk Assessment.
     When choosing an algorithm to use, Eagan was very thorough in explaining why it was the optimum choice.
 
-    However, I felt that the paper also had a few failings.
+    However, the paper had some issues.
     The introduction section felt quite long, and took quite a while to get around to basic message of the section.
-    This message was roughly ``Supercomputers are not used for Computer Vision because they are too expensive to run, but cheaper methods would be".
-    I also felt that the explanation of the project goals was obfuscated within the lengthy introduction.
+    The explanation of the project goals was obfuscated by the lengthy introduction.
     Many figures were of processed images, but there were no figures of the original, making it hard to see the true effectiveness of the code.
-    Some figures also showed errors in the processing.
-    It would be useful if these captions briefly explained what caused these errors.
-    Finally, some of the lines in the graphs included were very hard to distinguish from each other.
-    The makes the plots somewhat indecipherable.  
+    Some of the images showing errors in the processing lacked captions explaining what the cause of the problem was.
+    Finally, some of the lines in the graphs included were very hard to distinguish from each other, making the plots somewhat indecipherable.  
 
-    The paper also contained other things that I had not considered myself.
-    These are neither good, nor bad, but their impact should be considered.
+    The paper also contained elements that had not been considered.
     \begin{itemize}
       \item The paper it written in something very close to default \LaTeX.
       \item Within the introduction, were standard definitions of speed-up and efficiency.
@@ -47,10 +42,65 @@
   \subsection{Parallelization and Optimization of a Tax and Benefits Model}
     In this paper, McClintock solves the problem of parallelising a tax and benefits model for varying groups of people.
     This was done using dynamic programming of the optimal choice problem.
-    This is very far from my own domain of work; McClintock is starting with serial code, and he is optimising mathematical methods.
+    This is very far from my own domain of work; McClintock is starting with serial code, and is optimising explicitly mathematical algorithms.
 
+    This paper was very well written, the start is engaging and the acknowledgements seem genuine.
+    This improves the likelihood of the details of the paper being read.
+    The problem was established well in the introduction, and equally the method used was explained well.
+    Terms in the mathematical equations were explained, making the maths much more understandable.
+    McClintock was honest about the crashes that happened in his program, and the results are clear.
+    The graphs, in particular, are very easy to read, and well created.
+
+    There were some flaws with this paper though.
+    Some of the tables presented were not captioned, and so could be confused.
+    The choice of new pages was not always optimal either, making it somewhat difficult to read.
+
+    Things to consider;
     \begin{itemize}
-    \end{itemize}
+      \item McClintock uses the inclusive 'we', instead of the passive voice when referring to work done.
+      \item Results that are not immediately useful are located in the appendix.
+      \item The performance gains of changing the number of threads running is given.
+      \item Required to use \texttt{THREADPRIVATE} directive, which neither McClintock or his supervisor were familiar with.
+    \end{itemize} 
   \subsection{Novel Energy Efficient Compute Architectures on the Path to Exascale}
+    This paper focuses on the implementation of highly energy efficient super computers, with an eye to expanding towards the Exascale era.
+    Although Hadade originally intended to work on a heterogeneous system consisting of an ARM chip and a GPU accelerator, timely procurement proved difficult.
+    Instead, the paper focuses on the benchmarking of a Barcelona based supercomputer, Tibidabo, composed  of Nvidia Tegra chips.
+
+    The introduction brings the paper in very well, it interleaves examples and requirements of an Exascale system very well.
+    There is a very clear explanation of why energy efficiency is so important for the development of Exascale computers.
+    The specifics of the Tibidabo system are explained thoroughly.
+    Hadade goes on to extrapolate results to show that the supercomputer would scale onto the Green List.
+    The benchmarks used seemed thorough, especially with respect to the use of demanding software like LQCD solvers.
+
+    However, there are many basic issues with the paper.
+    To begin, the paper has not been spell checked very well; there are several somewhat obvious typos included.
+    Hadade also overuses the word 'Primordial' at the start, which is unusual enough to inhibit easy reading.
+    The main bulk of the work is a dry list of hardware architectures, and is somewhat hard to read through.
+    The amount of results compared to the amount of topics discussed makes the results seem somewhat sparse.
+    The conclusion is especially short, about a paragraph long.
+    
+    Considerations:
+    \begin{itemize}
+      \item Hadade had to change project goals significantly
+      \item References and citations are not in chronological order
+    \end{itemize}
+ 
   \subsection{Conclusions Drawn}
+    Upon reading these projects, the components of a successful project became clearer.
+    Of foremost importance is risk analysis.
+    Eagan found himself somewhat overworked with his project, and Hadade had to completely change project goals.
+    This makes it apparent that being prepared for risks is extremely important when a project goes awry.
+    Unfamiliar techniques might have to be used.
+    As using machine learning methods is being considered, this consideration gains relevance.
+    
+    The layout of the project also needs some consideration.
+    Explaining the layout of the thesis was not an element that was considered.
+    Neither was including a list of figures and tables.
+    If these are standard elements of a project, then they should also be included in this one.
+    The difference between Eagan and McClintocks graphs are also very important.
+    The clarity of McClintocks graphs make understanding the results extremely simple, much improving the ease of reading.
+    Finally, control over \LaTeX and the placement of new pages and diagrams should be exercised strongly.
+    
+  \biblio
 \end{document}

@@ -1,4 +1,53 @@
 \documentclass[../main.tex]{subfiles} 
 \begin{document}
   \section{Risk Analysis}
+    Listed here are some of the regular problems, followed by risks specifically related to this project.
+  \subsection{Common Risks}
+    \begin{description}
+      \item[Slow Pace] (Probability: Possible, Impact: Severe)\\
+        This happens when the target time for a project is underestimated, or when the project hits an unexpected snag.
+        Firstly, slack time has been built into each section of the work plan, as seen in the work plan section.
+        If the slow pace becomes critical, a simple version of the linear code will be used to produce a simple parallel version.
+      \item[Fast Pace] (Unlikely, Negligible)\\
+        In the unlikely situation work proceeds faster than expected, there are several areas for continued work.
+        Firstly, optimisation of pre-existing programs, both linear and parallel, would be extremely useful.
+        This will give definitive results about how much speed-up the program can obtain when recognising Wally in parallel.
+        Secondly, a user interface that shows members of the public how the program works could be developed.
+        This will start to create a project suitable for HPC Outreach.
+      \item[In Absentia] (Possible, Moderate)\\
+        Often in projects, a supervisor or student will be unable to attend meetings.
+        A netbook is intended to be used regularly, enabling work to be done remotely.
+        This extends to meetings, which can be done online using emails or other virtual techniques.
+      \item[Broken Equipment] (Unlikely, Severe)\\
+        If the normal workstation, a netbook, happens to break, then work can be continued on a desktop.
+        This should be possible with the use of a remote versioning system, like github.
+      \item[Sickness] (Possible, Moderate/Severe)\\
+        Illness cannot be prevented, but in general, some amount of work should be able to be done.
+        In the case of a major illness, the solution for slow pace will have to be implemented.
+      \item[Ennui] (Certain, Moderate)\\
+        Writers block will be solved by writing the dissertation report, or by implementing other sections of code.
+        In the case of serious disillusionment, basic willpower will have to be exercised.
+        
+    \end{description}
+   \subsection{Risks Specific to a Where's Wally Solver}
+    \begin{description}
+      \item[Unable to Find Wally] (Possible, Catastrophic)\\
+        In the situation that my program cannot find Wally, the problem will have to be simplified.
+        In testing various libraries, code has already been produced that can recognise a specific icon in an array of icons.
+        Thus, in the simplest of cases, some code can work, and can then be parallelised.
+      \item[Not Allowed To Use Wally] (Unlikely, Catastrophic)\\
+        It is conceivable that  Walkers Books, publishers of Where's Wally would not allow me to use their Wally figure.
+        Although this is legally dubious, there are ways around copyright laws.
+        For example, it is unlikely they have copyrighted the concept of Where's Wally.
+        This means a Where's Wally type puzzle could be generated.
+        This could be done by randomly placing a large stock of images on a canvas.
+      \item[Not Enough Wally Samples] (Probable, Moderate)\\
+        This risk especially applies to any machine learning that might be done.
+        The solution is to generate new puzzles, as with the above risk.
+      \item[Not Fast Enough] (Probable, Negligible) \\
+        If the program is not fast enough to compare to the speed that humans can solve a puzzle, then optimisations should be attempted.
+        If this can't be done in a sufficient time frame, then the completion of a parallel solution will have to be the final stage of the project.
+      \item[Not Suitable For HPC Outreach] (Probable, Negligible) \\
+        This is very likely, and in this case, my project will have to be the starting point for another HPC Outreach project.
+    \end{description}
 \end{document}
